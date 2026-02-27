@@ -326,3 +326,4 @@ TSWLatexianTemp*
 #*Notes.bib
 
 node_modules/
+dist/
