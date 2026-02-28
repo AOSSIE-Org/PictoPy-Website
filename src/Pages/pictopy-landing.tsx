@@ -162,7 +162,6 @@ const PictopyLanding: FC = () => {
                          border-2 border-transparent hover:border-black dark:hover:border-white 
                          transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               size="lg"
-              variant="outline"
               onClick={() =>
                 handleDownloadClick("Windows", downloadLinks.windows)
               }
@@ -176,7 +175,7 @@ const PictopyLanding: FC = () => {
                          border-2 border-transparent hover:border-black dark:hover:border-white 
                          transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               size="lg"
-              variant="outline"
+              
               onClick={() => handleDownloadClick("Linux", downloadLinks.linux)}
               disabled={loading || !downloadLinks.linux}
             >
