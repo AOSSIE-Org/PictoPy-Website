@@ -32,7 +32,7 @@ const faqs = [
 
 export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [darkMode, ] = useState<boolean>(() => {
+  const [darkMode,] = useState<boolean>(() => {
     return (
       localStorage.getItem("darkMode") === "true" ||
       (!("darkMode" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
@@ -47,9 +47,9 @@ export default function FAQ() {
   return (
     <section className="relative py-20 overflow-hidden min-h-screen transition-colors duration-300 text-black dark:bg-black dark:text-white">
       <BackgroundAnimation darkMode={darkMode} />
-      
+
       <div className="container relative z-10 mx-auto px-4 md:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -59,7 +59,7 @@ export default function FAQ() {
             Frequently Asked Questions
           </h2>
           <p className="max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
-            Everything you need to know about PictoCopy's smart photo organization 
+            Everything you need to know about PictoCopy's smart photo organization
             and AI-powered tagging features.
           </p>
         </motion.div>
@@ -96,13 +96,12 @@ function FAQItem({ question, answer, isOpen, onClick, index, icon }: FAQItemProp
 
   return (
     <motion.div
-      className={`rounded-xl overflow-hidden transition-all duration-300 
-  bg-white dark:bg-black
-  border
-  ${isOpen 
-    ? 'border- 6 border-pink-500 dark:border-grey-500' 
-    : 'border- 6 - dark:border-grey-500'}
-`}
+      className={`rounded-xl overflow-hidden transition-colors duration-200 bg-white dark:bg-black border
+                    hover:bg-gray-100 dark:hover:bg-gray-800
+      ${isOpen
+          ? 'border-2 border-green-400 dark:border-gray-500'
+          : 'border-2 border-gray-200 dark:border-gray-700'}
+      `}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -115,16 +114,16 @@ function FAQItem({ question, answer, isOpen, onClick, index, icon }: FAQItemProp
       >
         <div className="flex items-center">
           <div className={`mr-4 p-2 rounded-full 
-            ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' : 
-            'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'} 
+            ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' :
+              'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'} 
             transition-colors duration-300`}>
             {icon}
           </div>
           <span className="font-semibold text-lg">{question}</span>
         </div>
         <div className={`p-1 rounded-full transition-colors duration-300
-          ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' : 
-          'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'}`}>
+          ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' :
+            'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'}`}>
           {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
         </div>
       </button>
@@ -151,7 +150,7 @@ function BackgroundAnimation({ darkMode }: { darkMode: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Fixed dots pattern */}
-      <div className="absolute inset-0" style={{ 
+      <div className="absolute inset-0" style={{
         backgroundImage: `radial-gradient(${darkMode ? '#4B5563' : '#e5e7eb'} 1px, transparent 0)`,
         backgroundSize: '30px 30px',
         opacity: 0.4
@@ -161,16 +160,16 @@ function BackgroundAnimation({ darkMode }: { darkMode: boolean }) {
         <motion.div
           className="absolute"
           initial={{ opacity: 0.2, scale: 0.8, x: "10%", y: "10%" }}
-          animate={{ 
+          animate={{
             opacity: [0.2, 0.3, 0.2],
             scale: [0.8, 1, 0.8],
             x: ["10%", "15%", "10%"],
             y: ["10%", "5%", "10%"]
           }}
-          transition={{ 
+          transition={{
             repeat: Infinity,
             duration: 20,
-            ease: "easeInOut" 
+            ease: "easeInOut"
           }}
         >
           <svg width="400" height="400" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
