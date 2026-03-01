@@ -93,38 +93,51 @@ interface FAQItemProps {
 
 function FAQItem({ question, answer, isOpen, onClick, index, icon }: FAQItemProps) {
   const contentRef = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
 
   return (
     <motion.div
       className={`rounded-xl overflow-hidden transition-all duration-300 
-  bg-white dark:bg-black
-  border
-  ${isOpen 
-    ? 'border- 6 border-pink-500 dark:border-grey-500' 
-    : 'border- 6 - dark:border-grey-500'}
-`}
+        bg-white dark:bg-black border
+        ${isOpen
+          ? 'border-pink-500 dark:border-grey-500'
+          : 'dark:border-grey-500'}
+      `}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
     >
       <button
-        className="flex justify-between items-center w-full text-left p-6 group"
+        className={`flex justify-between items-center w-full text-left p-6 group
+          transition-colors duration-300 rounded-xl
+          ${hovered && !isOpen ? 'bg-green-50 dark:bg-green-900/10' : ''}
+        `}
         onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         aria-expanded={isOpen}
       >
         <div className="flex items-center">
-          <div className={`mr-4 p-2 rounded-full 
-            ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' : 
-            'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'} 
-            transition-colors duration-300`}>
+          <div className={`mr-4 p-2 rounded-full transition-colors duration-300
+            ${isOpen
+              ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300'
+              : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'}
+          `}>
             {icon}
           </div>
-          <span className="font-semibold text-lg">{question}</span>
+          <span className={`font-semibold text-lg transition-colors duration-300
+            ${hovered && !isOpen ? 'text-green-600 dark:text-green-400' : ''}
+            ${isOpen ? 'text-green-600 dark:text-green-400' : ''}
+          `}>
+            {question}
+          </span>
         </div>
         <div className={`p-1 rounded-full transition-colors duration-300
-          ${isOpen ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300' : 
-          'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'}`}>
+          ${isOpen
+            ? 'bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-300'
+            : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400 group-hover:bg-green-50 group-hover:text-green-500 dark:group-hover:bg-green-900/30 dark:group-hover:text-green-300'}
+        `}>
           {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
         </div>
       </button>
