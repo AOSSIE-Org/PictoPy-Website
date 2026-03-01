@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const ShuffleHero = () => {
-  // Function to scroll to downloads section
   const scrollToDownloads = () => {
     const downloadsSection = document.getElementById('downloads-section');
     if (downloadsSection) {
@@ -44,7 +43,7 @@ const ShuffleHero = () => {
         </motion.p>
         
         <div className="flex space-x-4">
-          {/* Download button - scrolls to downloads section */}
+          {/* Download button */}
           <motion.button 
             onClick={scrollToDownloads}
             initial={{ scale: 0.9, opacity: 0 }}
@@ -52,12 +51,12 @@ const ShuffleHero = () => {
             transition={{ duration: 0.5, delay: 0.6 }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-gradient-to-r from-yellow-500 to-green-500 text-white font-medium py-2 px-6 rounded transition-all shadow-sm hover:shadow-md"
+            className="bg-gradient-to-r from-yellow-500 to-green-500 hover:from-yellow-600 hover:to-green-600 text-white font-semibold py-2 px-6 rounded transition-all shadow-sm hover:shadow-md"
           >
             Download
           </motion.button>
           
-          {/* View Docs button - links to documentation */}
+          {/* View Docs button - fixed contrast on hover */}
           <motion.a 
             href="https://aossie-org.github.io/PictoPy/" 
             target="_blank"
@@ -67,7 +66,7 @@ const ShuffleHero = () => {
             transition={{ duration: 0.5, delay: 0.7 }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            className="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium py-2 px-6 rounded transition-all hover:border-teal-500 hover:text-teal-500"
+            className="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-semibold py-2 px-6 rounded transition-all hover:bg-teal-600 hover:border-teal-600 hover:text-white dark:hover:bg-teal-600 dark:hover:border-teal-600 dark:hover:text-white"
           >
             View Docs
           </motion.a>
@@ -185,13 +184,11 @@ const ShuffleGrid = () => {
 
   useEffect(() => {
     shuffleSquares();
-
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
   const shuffleSquares = () => {
     setSquares(generateSquares());
-
     timeoutRef.current = setTimeout(shuffleSquares, 3000);
   };
 
