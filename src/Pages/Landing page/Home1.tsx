@@ -1,13 +1,20 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+const SHUFFLE_INTERVAL = 3000;
+
+interface SquareItem {
+  id: number;
+  src: string;
+}
 
 const ShuffleHero = () => {
   const scrollToDownloads = () => {
-    const downloadsSection = document.getElementById('downloads-section');
+    const downloadsSection = document.getElementById("downloads-section");
     if (downloadsSection) {
       downloadsSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+        behavior: "smooth",
+        block: "start",
       });
     }
   };
@@ -15,7 +22,7 @@ const ShuffleHero = () => {
   return (
     <section className="w-full px-8 py-12 grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-6xl mx-auto bg-white dark:bg-black transition-colors duration-300">
       <div className="font-['Inter',_sans-serif]">
-        <motion.span 
+        <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -23,8 +30,8 @@ const ShuffleHero = () => {
         >
           INTELLIGENT GALLERY MANAGEMENT
         </motion.span>
-        
-        <motion.h3 
+
+        <motion.h3
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
@@ -32,19 +39,20 @@ const ShuffleHero = () => {
         >
           PictoPy
         </motion.h3>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-base md:text-lg text-slate-600 dark:text-slate-300 my-4 md:my-6 leading-relaxed"
         >
-          Advanced desktop gallery application powered by Tauri, React, and Rust with a Python backend for intelligent image analysis and seamless management.
+          Advanced desktop gallery application powered by Tauri, React, and Rust
+          with a Python backend for intelligent image analysis and seamless
+          management.
         </motion.p>
-        
+
         <div className="flex space-x-4">
-          {/* Download button */}
-          <motion.button 
+          <motion.button
             onClick={scrollToDownloads}
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -55,10 +63,9 @@ const ShuffleHero = () => {
           >
             Download
           </motion.button>
-          
-          {/* View Docs button - fixed contrast on hover */}
-          <motion.a 
-            href="https://aossie-org.github.io/PictoPy/" 
+
+          <motion.a
+            href="https://aossie-org.github.io/PictoPy/"
             target="_blank"
             rel="noopener noreferrer"
             initial={{ scale: 0.9, opacity: 0 }}
@@ -77,24 +84,23 @@ const ShuffleHero = () => {
   );
 };
 
-const shuffle = (array: (typeof squareData)[0][]) => {
-  let currentIndex = array.length,
-    randomIndex;
+const shuffle = (array: SquareItem[]): SquareItem[] => {
+  const result = [...array];
+  let currentIndex = result.length;
 
-  while (currentIndex != 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
-
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
+    [result[currentIndex], result[randomIndex]] = [
+      result[randomIndex],
+      result[currentIndex],
     ];
   }
 
-  return array;
+  return result;
 };
 
-const squareData = [
+const squareData: SquareItem[] = [
   {
     id: 1,
     src: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
@@ -173,28 +179,31 @@ const generateSquares = () => {
       style={{
         backgroundImage: `url(${sq.src})`,
         backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     ></motion.div>
   ));
 };
 
 const ShuffleGrid = () => {
-  const timeoutRef = useRef<any>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [squares, setSquares] = useState(generateSquares());
+
+  const shuffleSquares = useCallback(() => {
+    setSquares(generateSquares());
+    timeoutRef.current = setTimeout(shuffleSquares, SHUFFLE_INTERVAL);
+  }, []);
 
   useEffect(() => {
     shuffleSquares();
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
-
-  const shuffleSquares = () => {
-    setSquares(generateSquares());
-    timeoutRef.current = setTimeout(shuffleSquares, 3000);
-  };
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [shuffleSquares]);
 
   return (
     <div className="grid grid-cols-4 grid-rows-4 h-[450px] gap-1">
-      {squares.map((sq) => sq)}
+      {squares}
     </div>
   );
 };
