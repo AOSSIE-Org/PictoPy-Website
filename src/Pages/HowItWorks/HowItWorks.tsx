@@ -43,7 +43,7 @@ export default function GalleryFeatures() {
         <h2 className="text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
           Gallery Features
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {steps.map((step, index) => (
             <motion.div
               key={index}
@@ -55,11 +55,11 @@ export default function GalleryFeatures() {
             >
               <div 
                 onMouseEnter={() => {
-                // start a 1s timer to set active only if remains hovered
+                // start a short timer to avoid accidental hover triggers
                 hoverTimers.current[index] = window.setTimeout(() => {
                 setActiveStep(index);
                 hoverTimers.current[index] = null;
-                }, 1000);
+                }, 200);
                 }}
                 onMouseLeave={() => {
                 // cancel timer if leaving early; if already active, hide immediately
@@ -99,9 +99,9 @@ export default function GalleryFeatures() {
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4"
+                      className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4 overflow-hidden"
                     >
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                      <p className="text-sm text-gray-500 dark:text-gray-400 break-words">
                         {step.details}
                       </p>
                     </motion.div>
