@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import YourLogo from "@/assets/38881995.png"; // Update this import path to your logo
+import YourLogo from "@/assets/38881995.png";
 
 interface NavLinkProps {
   to: string;
@@ -17,24 +17,20 @@ const NavLink: React.FC<NavLinkProps> = ({
   onClick,
   isScrollLink = false,
 }) => {
-  // Handle scroll to section
   const handleClick = (e: React.MouseEvent) => {
     if (isScrollLink) {
       e.preventDefault();
 
-      // Remove the # from the target
       const targetId = to.replace("#", "");
       const element = document.getElementById(targetId);
 
       if (element) {
-        // Scroll to the element with smooth behavior
         element.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
       }
 
-      // Call additional onClick handler if provided
       if (onClick) onClick();
     } else if (onClick) {
       onClick();
@@ -62,19 +58,19 @@ const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
-  // Load dark mode setting from localStorage or fallback to system preference
   useEffect(() => {
     const savedDarkMode = localStorage.getItem("darkMode");
 
     if (savedDarkMode !== null) {
       setDarkMode(savedDarkMode === "true");
     } else {
-      const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
       setDarkMode(prefersDarkMode);
     }
   }, []);
 
-  // Apply dark mode class to body when darkMode state changes
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -85,7 +81,6 @@ const Navbar: React.FC = () => {
     }
   }, [darkMode]);
 
-  // Handle scroll to adjust navbar styles
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -98,31 +93,31 @@ const Navbar: React.FC = () => {
 
   return (
     <>
+      {/* ===== NAVBAR ===== */}
       <nav
         className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 
         transition-all duration-300 ease-in-out 
         bg-white/70 dark:bg-black/50 backdrop-blur-md 
         rounded-3xl overflow-hidden
-        ${scrolled ? "shadow-lg shadow-gray-300/50 dark:shadow-black/40" : "shadow-none"}
+        ${scrolled ? "shadow-lg shadow-gray-300/50 dark:shadow-black/40" : ""}
         ${scrolled ? "w-[90%]" : "w-[95%]"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex-shrink-0 flex items-center">
-              <div className="mr-4">
-                <Link to="/">
-                  <img
-                    src={YourLogo}
-                    alt="PictoPy Logo"
-                    className="w-10 h-10 object-contain"
-                  />
-                </Link>
-              </div>
 
-              {/* Tooltip on hover */}
-              <div className="relative group">
-                <Link
-                  to="/"
+            {/* LOGO — navigates to home and scrolls to top */}
+            <Link
+              to="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="group flex items-center gap-3"
+            >
+              <img
+                src={YourLogo}
+                alt="PictoPy"
+                className="h-8 w-8 object-contain"
+              />
+              <div className="relative">
+                <span
                   className="text-2xl font-bold 
                   bg-gradient-to-r from-yellow-500 to-green-500 
                   bg-clip-text text-transparent
@@ -130,91 +125,134 @@ const Navbar: React.FC = () => {
                   transition-colors duration-300"
                 >
                   PictoPy
-                </Link>
-
-                {/* Custom Tooltip with Gradient */}
+                </span>
+                {/* Tooltip appears BELOW, pointer-events-none so it never blocks clicks */}
                 <div
-                  className="absolute left-1/2 transform -translate-x-1/2 bottom-12 hidden group-hover:block 
-                  bg-gradient-to-r from-yellow-500 to-green-500 text-white text-sm px-2 py-1 rounded-md shadow-md"
+                  className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2
+                  hidden group-hover:block pointer-events-none
+                  bg-gradient-to-r from-yellow-500 to-green-500
+                  text-white text-sm px-2 py-1 rounded-md
+                  shadow-[0_4px_6px_rgba(0,0,0,0.3)] whitespace-nowrap"
                 >
                   Ready to sort images
                 </div>
               </div>
-            </div>
+            </Link>
 
-            {/* Desktop Navigation */}
+            {/* DESKTOP NAV */}
             <div className="hidden md:flex items-center space-x-8">
               <NavLink to="/">Home</NavLink>
-
-              {/* Dark Mode Toggle Button */}
+              <NavLink to="#features" isScrollLink={true}>
+                Feature
+              </NavLink>
+              <NavLink to="#about" isScrollLink={true}>
+                About
+              </NavLink>
+              <Button
+                type="button"
+                onClick={() =>
+                  window.open(
+                    "https://github.com/AOSSIE-Org/PictoPy/releases",
+                    "_blank"
+                  )
+                }
+                className="bg-gray-800 dark:bg-black text-white
+                hover:bg-green-700 dark:hover:bg-green-800
+                transition-colors duration-300"
+              >
+                Download
+              </Button>
               <button
+                type="button"
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
                 transition-colors duration-300"
               >
-                <span className="sr-only">Toggle dark mode</span>
                 {darkMode ? <span>🌙</span> : <span>🌞</span>}
               </button>
             </div>
 
-            {/* Mobile menu button */}
+            {/* MOBILE MENU BUTTON */}
             <div className="md:hidden flex items-center space-x-4">
               <button
+                type="button"
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
                 transition-colors duration-300"
               >
-                <span className="sr-only">Toggle dark mode</span>
                 {darkMode ? <span>🌙</span> : <span>🌞</span>}
               </button>
               <button
+                type="button"
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
                 transition-colors duration-300"
               >
-                <span className="sr-only">Open menu</span>
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
-          </div>
-        </div>
 
-        {/* Mobile menu */}
-        <div
-          className={`md:hidden fixed inset-0 z-50 
-          bg-white dark:bg-black
-          transform transition-transform duration-300 ease-in-out 
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <div className="pt-16 pb-6 px-4 space-y-6">
-            <div className="space-y-4 flex flex-col items-start">
-              <NavLink to="/" onClick={() => setIsOpen(false)}>
-                Home
-              </NavLink>
-              <NavLink to="#features" isScrollLink={true} onClick={() => setIsOpen(false)}>
-                Feature
-              </NavLink>
-              <NavLink to="#about" isScrollLink={true} onClick={() => setIsOpen(false)}>
-                About
-              </NavLink>
-              <Button
-                className="w-full bg-gray-800 dark:bg-black 
-                text-white 
-                hover:bg-green-700 dark:hover:bg-green-800 
-                transition-colors duration-300 mt-4"
-                onClick={() => setIsOpen(false)}
-              >
-                Download
-              </Button>
-            </div>
           </div>
         </div>
       </nav>
+      {/* ===== END NAVBAR ===== */}
 
-      {/* Overlay for mobile menu */}
+      {/* ===== MOBILE MENU — moved outside <nav> so overflow:hidden does not clip it ===== */}
+      <div
+        className={`md:hidden fixed inset-0 z-50 
+        bg-white dark:bg-black
+        transform transition-transform duration-300 ease-in-out 
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="pt-16 pb-6 px-4 space-y-6">
+          <div className="space-y-4 flex flex-col items-start">
+            <NavLink to="/" onClick={() => setIsOpen(false)}>
+              Home
+            </NavLink>
+            <NavLink
+              to="#features"
+              isScrollLink={true}
+              onClick={() => setIsOpen(false)}
+            >
+              Feature
+            </NavLink>
+            <NavLink
+              to="#about"
+              isScrollLink={true}
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </NavLink>
+            <Button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                window.open(
+                  "https://github.com/AOSSIE-Org/PictoPy/releases",
+                  "_blank"
+                );
+              }}
+              className="w-full bg-gray-800 dark:bg-black 
+              text-white 
+              hover:bg-green-700 dark:hover:bg-green-800 
+              transition-colors duration-300 mt-4"
+            >
+              Download
+            </Button>
+          </div>
+        </div>
+      </div>
+      {/* ===== END MOBILE MENU ===== */}
+
+      {/* OVERLAY */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
@@ -226,3 +264,7 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
+
+
+

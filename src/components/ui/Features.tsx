@@ -144,7 +144,7 @@ const DownloadCard = () => {
 // Features component
 const Features = () => {
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-black dark:to-[#161717]">
+    <section id="features" className="py-24 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-black dark:to-[#161717]">
       <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
