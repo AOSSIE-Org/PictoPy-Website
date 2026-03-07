@@ -146,9 +146,11 @@ const Navbar: React.FC = () => {
                 About
               </NavLink>
               <Button
-                className="bg-gray-800 dark:bg-black text-white 
-    hover:bg-green-700 dark:hover:bg-green-800 
-    transition-colors duration-300"
+               type="button"
+               onClick={() => window.open("https://github.com/AOSSIE-Org/PictoPy/releases", "_blank")}
+               className="bg-gray-800 dark:bg-black text-white
+               hover:bg-green-700 dark:hover:bg-screen-800
+               transition-colours duration 300"
               >
                 Download
               </Button>
@@ -176,6 +178,8 @@ const Navbar: React.FC = () => {
               </button>
 
               <button
+                type="button"
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
@@ -190,6 +194,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </div>
+      </nav>
 
         {/* MOBILE MENU */}
         <div
@@ -236,7 +241,6 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </div>
-      </nav>
 
       {/* OVERLAY */}
       {isOpen && (
@@ -250,4 +254,5 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
 
