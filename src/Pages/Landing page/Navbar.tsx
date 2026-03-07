@@ -128,7 +128,7 @@ const Navbar: React.FC = () => {
                 </span>
 
                 <div
-                  className="absolute left-1/2 transform -translate-x-1/2 bottom-12 hidden group-hover:block 
+                  className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 hidden group-hover:block 
                   bg-gradient-to-r from-yellow-500 to-green-500 text-white text-sm px-2 py-1 rounded-md shadow-md
                   pointer-events-none"
                 >
@@ -142,6 +142,7 @@ const Navbar: React.FC = () => {
               <NavLink to="/">Home</NavLink>
 
               <button
+                type="button"
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
@@ -206,6 +207,8 @@ const Navbar: React.FC = () => {
               </NavLink>
 
               <Button
+                type="button"
+                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
                 className="w-full bg-gray-800 dark:bg-black 
                 text-white 
                 hover:bg-green-700 dark:hover:bg-green-800 
