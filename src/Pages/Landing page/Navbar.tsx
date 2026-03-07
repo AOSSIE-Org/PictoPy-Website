@@ -103,12 +103,11 @@ const Navbar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-
             {/* LOGO */}
             <Link
               to="/"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="flex items-center gap-3"
+              className="group flex items-center gap-3"
             >
               <img
                 src={YourLogo}
@@ -116,7 +115,7 @@ const Navbar: React.FC = () => {
                 className="h-8 w-8 object-contain"
               />
 
-              <div className="relative group">
+              <div className="relative">
                 <span
                   className="text-2xl font-bold 
                   bg-gradient-to-r from-yellow-500 to-green-500 
@@ -140,6 +139,19 @@ const Navbar: React.FC = () => {
             {/* DESKTOP NAV */}
             <div className="hidden md:flex items-center space-x-8">
               <NavLink to="/">Home</NavLink>
+              <NavLink to="#features" isScrollLink={true}>
+                Feature
+              </NavLink>
+              <NavLink to="#about" isScrollLink={true}>
+                About
+              </NavLink>
+              <Button
+                className="bg-gray-800 dark:bg-black text-white 
+    hover:bg-green-700 dark:hover:bg-green-800 
+    transition-colors duration-300"
+              >
+                Download
+              </Button>
 
               <button
                 type="button"
@@ -169,10 +181,13 @@ const Navbar: React.FC = () => {
                 hover:text-black dark:hover:text-white 
                 transition-colors duration-300"
               >
-                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {isOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
               </button>
             </div>
-
           </div>
         </div>
 
@@ -185,7 +200,6 @@ const Navbar: React.FC = () => {
         >
           <div className="pt-16 pb-6 px-4 space-y-6">
             <div className="space-y-4 flex flex-col items-start">
-
               <NavLink to="/" onClick={() => setIsOpen(false)}>
                 Home
               </NavLink>
@@ -208,7 +222,9 @@ const Navbar: React.FC = () => {
 
               <Button
                 type="button"
-                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-label={
+                  isOpen ? "Close navigation menu" : "Open navigation menu"
+                }
                 className="w-full bg-gray-800 dark:bg-black 
                 text-white 
                 hover:bg-green-700 dark:hover:bg-green-800 
@@ -217,7 +233,6 @@ const Navbar: React.FC = () => {
               >
                 Download
               </Button>
-
             </div>
           </div>
         </div>
@@ -235,3 +250,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
