@@ -93,6 +93,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
+      {/* ===== NAVBAR ===== */}
       <nav
         className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-6xl z-50 
         transition-all duration-300 ease-in-out 
@@ -103,7 +104,8 @@ const Navbar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* LOGO */}
+
+            {/* LOGO — navigates to home and scrolls to top */}
             <Link
               to="/"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -114,7 +116,6 @@ const Navbar: React.FC = () => {
                 alt="PictoPy"
                 className="h-8 w-8 object-contain"
               />
-
               <div className="relative">
                 <span
                   className="text-2xl font-bold 
@@ -125,11 +126,13 @@ const Navbar: React.FC = () => {
                 >
                   PictoPy
                 </span>
-
+                {/* Tooltip appears BELOW, pointer-events-none so it never blocks clicks */}
                 <div
-                  className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2 hidden group-hover:block 
-                  bg-gradient-to-r from-yellow-500 to-green-500 text-white text-sm px-2 py-1 rounded-md shadow-md
-                  pointer-events-none"
+                  className="absolute left-1/2 transform -translate-x-1/2 top-full mt-2
+                  hidden group-hover:block pointer-events-none
+                  bg-gradient-to-r from-yellow-500 to-green-500
+                  text-white text-sm px-2 py-1 rounded-md
+                  shadow-[0_4px_6px_rgba(0,0,0,0.3)] whitespace-nowrap"
                 >
                   Ready to sort images
                 </div>
@@ -146,15 +149,19 @@ const Navbar: React.FC = () => {
                 About
               </NavLink>
               <Button
-               type="button"
-               onClick={() => window.open("https://github.com/AOSSIE-Org/PictoPy/releases", "_blank")}
-               className="bg-gray-800 dark:bg-black text-white
-               hover:bg-green-700 dark:hover:bg-screen-800
-               transition-colours duration 300"
+                type="button"
+                onClick={() =>
+                  window.open(
+                    "https://github.com/AOSSIE-Org/PictoPy/releases",
+                    "_blank"
+                  )
+                }
+                className="bg-gray-800 dark:bg-black text-white
+                hover:bg-green-700 dark:hover:bg-green-800
+                transition-colors duration-300"
               >
                 Download
               </Button>
-
               <button
                 type="button"
                 onClick={() => setDarkMode(!darkMode)}
@@ -169,6 +176,7 @@ const Navbar: React.FC = () => {
             {/* MOBILE MENU BUTTON */}
             <div className="md:hidden flex items-center space-x-4">
               <button
+                type="button"
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-gray-800 dark:text-gray-300 
                 hover:text-black dark:hover:text-white 
@@ -176,7 +184,6 @@ const Navbar: React.FC = () => {
               >
                 {darkMode ? <span>🌙</span> : <span>🌞</span>}
               </button>
-
               <button
                 type="button"
                 aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -192,55 +199,58 @@ const Navbar: React.FC = () => {
                 )}
               </button>
             </div>
+
           </div>
         </div>
       </nav>
+      {/* ===== END NAVBAR ===== */}
 
-        {/* MOBILE MENU */}
-        <div
-          className={`md:hidden fixed inset-0 z-50 
-          bg-white dark:bg-black
-          transform transition-transform duration-300 ease-in-out 
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <div className="pt-16 pb-6 px-4 space-y-6">
-            <div className="space-y-4 flex flex-col items-start">
-              <NavLink to="/" onClick={() => setIsOpen(false)}>
-                Home
-              </NavLink>
-
-              <NavLink
-                to="#features"
-                isScrollLink={true}
-                onClick={() => setIsOpen(false)}
-              >
-                Feature
-              </NavLink>
-
-              <NavLink
-                to="#about"
-                isScrollLink={true}
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </NavLink>
-
-              <Button
-                type="button"
-                aria-label={
-                  isOpen ? "Close navigation menu" : "Open navigation menu"
-                }
-                className="w-full bg-gray-800 dark:bg-black 
-                text-white 
-                hover:bg-green-700 dark:hover:bg-green-800 
-                transition-colors duration-300 mt-4"
-                onClick={() => setIsOpen(false)}
-              >
-                Download
-              </Button>
-            </div>
+      {/* ===== MOBILE MENU — moved outside <nav> so overflow:hidden does not clip it ===== */}
+      <div
+        className={`md:hidden fixed inset-0 z-50 
+        bg-white dark:bg-black
+        transform transition-transform duration-300 ease-in-out 
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="pt-16 pb-6 px-4 space-y-6">
+          <div className="space-y-4 flex flex-col items-start">
+            <NavLink to="/" onClick={() => setIsOpen(false)}>
+              Home
+            </NavLink>
+            <NavLink
+              to="#features"
+              isScrollLink={true}
+              onClick={() => setIsOpen(false)}
+            >
+              Feature
+            </NavLink>
+            <NavLink
+              to="#about"
+              isScrollLink={true}
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </NavLink>
+            <Button
+              type="button"
+              onClick={() => {
+                setIsOpen(false);
+                window.open(
+                  "https://github.com/AOSSIE-Org/PictoPy/releases",
+                  "_blank"
+                );
+              }}
+              className="w-full bg-gray-800 dark:bg-black 
+              text-white 
+              hover:bg-green-700 dark:hover:bg-green-800 
+              transition-colors duration-300 mt-4"
+            >
+              Download
+            </Button>
           </div>
         </div>
+      </div>
+      {/* ===== END MOBILE MENU ===== */}
 
       {/* OVERLAY */}
       {isOpen && (
@@ -254,5 +264,7 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+
+
 
 
