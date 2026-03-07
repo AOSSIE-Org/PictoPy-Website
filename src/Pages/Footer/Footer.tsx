@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Copyright */}
         <div className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-          © (new Date().getFullYear()) PictoPy. All rights reserved.
+          © {new Date().getFullYear()} PictoPy. All rights reserved.
         </div>
 
       </div>
