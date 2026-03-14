@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import YourLogo from "@/assets/38881995.png"; // Update this import path to your logo
 
 interface NavLinkProps {
@@ -96,6 +95,13 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <nav
@@ -144,7 +150,10 @@ const Navbar: React.FC = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <NavLink to="/">Home</NavLink>
+              <NavLink to="/" onClick={scrollToTop}>Home</NavLink>
+              <NavLink to="#features" isScrollLink={true}>Features</NavLink>
+              <NavLink to="#about" isScrollLink={true}>About</NavLink>
+              <NavLink to="#downloads-section" isScrollLink={true}>Download</NavLink>
 
               {/* Dark Mode Toggle Button */}
               <button
@@ -182,37 +191,54 @@ const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Mobile menu */}
-        <div
-          className={`md:hidden fixed inset-0 z-50 
+      </nav>
+
+      {/* Mobile menu - outside nav to avoid transform + overflow-hidden clipping */}
+      <div
+        className={`md:hidden fixed inset-0 z-[60] 
           bg-white dark:bg-black
           transform transition-transform duration-300 ease-in-out 
           ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <div className="pt-16 pb-6 px-4 space-y-6">
-            <div className="space-y-4 flex flex-col items-start">
-              <NavLink to="/" onClick={() => setIsOpen(false)}>
-                Home
-              </NavLink>
-              <NavLink to="#features" isScrollLink={true} onClick={() => setIsOpen(false)}>
-                Feature
-              </NavLink>
-              <NavLink to="#about" isScrollLink={true} onClick={() => setIsOpen(false)}>
-                About
-              </NavLink>
-              <Button
-                className="w-full bg-gray-800 dark:bg-black 
-                text-white 
-                hover:bg-green-700 dark:hover:bg-green-800 
-                transition-colors duration-300 mt-4"
-                onClick={() => setIsOpen(false)}
-              >
-                Download
-              </Button>
-            </div>
+      >
+        <div className="flex justify-between items-center px-4 pt-4">
+          <Link
+            to="/"
+            className="text-2xl font-bold 
+              bg-gradient-to-r from-yellow-500 to-green-500 
+              bg-clip-text text-transparent"
+          >
+            PictoPy
+          </Link>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-gray-800 dark:text-gray-300 
+              hover:text-black dark:hover:text-white 
+              transition-colors duration-300"
+          >
+            <span className="sr-only">Close menu</span>
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        <div className="flex flex-col items-center justify-center h-[calc(100%-60px)] px-4">
+          <div className="space-y-8 flex flex-col items-center text-center">
+            <NavLink to="/" onClick={() => {
+              scrollToTop();
+              setIsOpen(false);
+            }}>
+              Home
+            </NavLink>
+            <NavLink to="#features" isScrollLink={true} onClick={() => setIsOpen(false)}>
+              Features
+            </NavLink>
+            <NavLink to="#about" isScrollLink={true} onClick={() => setIsOpen(false)}>
+              About
+            </NavLink>
+            <NavLink to="#downloads-section" isScrollLink={true} onClick={() => setIsOpen(false)}>
+              Download
+            </NavLink>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* Overlay for mobile menu */}
       {isOpen && (

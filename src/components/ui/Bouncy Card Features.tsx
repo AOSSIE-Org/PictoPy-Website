@@ -38,7 +38,7 @@ export const BouncyCardsFeatures = () => {
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 text-slate-800 dark:text-slate-200">
+    <section id="features" className="mx-auto max-w-7xl px-4 py-12 text-slate-800 dark:text-slate-200">
       <motion.div 
         className="mb-12 text-center"
         initial={{ opacity: 0, y: -50 }}
