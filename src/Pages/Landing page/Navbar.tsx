@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import YourLogo from "@/assets/38881995.png"; // Update this import path to your logo
 
@@ -146,6 +146,19 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center space-x-8">
               <NavLink to="/">Home</NavLink>
 
+              {/* GitHub Repository Link */}
+              <a
+                href="https://github.com/AOSSIE-Org/PictoPy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-800 dark:text-gray-300 
+                hover:text-black dark:hover:text-white 
+                transition-colors duration-300"
+                aria-label="AOSSIE PictoPy GitHub Repository"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+
               {/* Dark Mode Toggle Button */}
               <button
                 onClick={() => setDarkMode(!darkMode)}
@@ -194,6 +207,18 @@ const Navbar: React.FC = () => {
               <NavLink to="/" onClick={() => setIsOpen(false)}>
                 Home
               </NavLink>
+              <a
+                href="https://github.com/AOSSIE-Org/PictoPy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 dark:text-gray-300 text-lg font-medium 
+                hover:text-black dark:hover:text-white 
+                transition duration-300 flex items-center space-x-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <Github className="h-5 w-5" />
+                <span>GitHub</span>
+              </a>
               <NavLink to="#features" isScrollLink={true} onClick={() => setIsOpen(false)}>
                 Feature
               </NavLink>
