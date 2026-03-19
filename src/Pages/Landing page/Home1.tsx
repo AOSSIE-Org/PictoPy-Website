@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { useOS } from "../../hooks/useOS";
 
 const ShuffleHero = () => {
-  // Function to scroll to downloads section
   const scrollToDownloads = () => {
     const downloadsSection = document.getElementById('downloads-section');
     if (downloadsSection) {
@@ -12,6 +12,23 @@ const ShuffleHero = () => {
       });
     }
   };
+
+  const os = useOS();
+
+  const getButtonContent = () => {
+    switch (os) {
+      case "mac":
+        return { text: "Download for Mac", href: "#mac-download-placeholder" };
+      case "windows":
+        return { text: "Download for Windows", href: "#windows-download-placeholder" };
+      case "linux":
+        return { text: "Download for Linux (.deb)", href: "#linux-download-placeholder" };
+      default:
+        return { text: "Download", href: undefined };
+    }
+  };
+
+  const btnContent = getButtonContent();
 
   return (
     <section className="w-full px-8 py-12 grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-6xl mx-auto bg-white dark:bg-black transition-colors duration-300">
@@ -43,33 +60,63 @@ const ShuffleHero = () => {
           Advanced desktop gallery application powered by Tauri, React, and Rust with a Python backend for intelligent image analysis and seamless management.
         </motion.p>
         
-        <div className="flex space-x-4">
-          {/* Download button - scrolls to downloads section */}
-          <motion.button 
-            onClick={scrollToDownloads}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            className="bg-gradient-to-r from-yellow-500 to-green-500 text-white font-medium py-2 px-6 rounded transition-all shadow-sm hover:shadow-md"
+        <div className="flex flex-col items-start gap-3">
+          <div className="flex space-x-4">
+            {/* Dynamic Download button */}
+            {os === "unknown" ? (
+              <motion.button 
+                onClick={scrollToDownloads}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-r from-yellow-500 to-green-500 text-white font-medium py-2 px-6 rounded transition-all shadow-sm hover:shadow-md"
+              >
+                {btnContent.text}
+              </motion.button>
+            ) : (
+              <motion.a 
+                href={btnContent.href}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-r from-yellow-500 to-green-500 text-white font-medium py-2 px-6 rounded transition-all shadow-sm hover:shadow-md"
+              >
+                {btnContent.text}
+              </motion.a>
+            )}
+            
+            {/* View Docs button - links to documentation */}
+            <motion.a 
+              href="https://aossie-org.github.io/PictoPy/" 
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium py-2 px-6 rounded transition-all hover:border-teal-500 hover:text-teal-500 inline-block text-center flex items-center justify-center"
+            >
+              View Docs
+            </motion.a>
+          </div>
+
+          <motion.a
+            href="#downloads-section"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToDownloads();
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="text-xs md:text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors underline underline-offset-2"
           >
-            Download
-          </motion.button>
-          
-          {/* View Docs button - links to documentation */}
-          <motion.a 
-            href="https://aossie-org.github.io/PictoPy/" 
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.98 }}
-            className="border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium py-2 px-6 rounded transition-all hover:border-teal-500 hover:text-teal-500"
-          >
-            View Docs
+            Looking for another OS?
           </motion.a>
         </div>
       </div>
