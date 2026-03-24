@@ -96,17 +96,24 @@ function FAQItem({ question, answer, isOpen, onClick, index, icon }: FAQItemProp
 
   return (
     <motion.div
-      className={`rounded-xl overflow-hidden transition-all duration-300 
-  bg-white dark:bg-black
-  border
-  ${isOpen 
-    ? 'border- 6 border-pink-500 dark:border-grey-500' 
-    : 'border- 6 - dark:border-grey-500'}
-`}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
+  className={`rounded-xl overflow-hidden
+    bg-white dark:bg-black
+    border-2
+    transition-colors duration-200
+    ${isOpen 
+      ? 'border-green-400 dark:border-green-500 shadow-md' 
+      : 'border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600'}
+  `}
+  whileHover={{
+    y: -6,
+    scale: 1.02,
+    boxShadow: "0 12px 24px rgba(0,0,0,0.15)"
+  }}
+  transition={{
+    type: "spring",
+    stiffness: 300,
+    damping: 20
+  }}
     >
       <button
         className="flex justify-between items-center w-full text-left p-6 group"
@@ -149,7 +156,7 @@ function FAQItem({ question, answer, isOpen, onClick, index, icon }: FAQItemProp
 
 function BackgroundAnimation({ darkMode }: { darkMode: boolean }) {
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
       {/* Fixed dots pattern */}
       <div className="absolute inset-0" style={{ 
         backgroundImage: `radial-gradient(${darkMode ? '#4B5563' : '#e5e7eb'} 1px, transparent 0)`,
