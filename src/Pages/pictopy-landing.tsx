@@ -147,7 +147,7 @@ const PictopyLanding: FC = () => {
           {/* Download Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 h-12 px-8 transition-all duration-300 
+              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 hover:text-white dark:hover:text-black h-12 px-8 transition-all duration-300
                          border-2 border-transparent hover:border-black dark:hover:border-white 
                          transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               size="lg"
@@ -158,7 +158,7 @@ const PictopyLanding: FC = () => {
               Download for Mac
             </Button>
             <Button
-              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 h-12 px-8 transition-all duration-300 
+              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 hover:text-white dark:hover:text-black h-12 px-8 transition-all duration-300
                          border-2 border-transparent hover:border-black dark:hover:border-white 
                          transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               size="lg"
@@ -172,7 +172,7 @@ const PictopyLanding: FC = () => {
               Download for Windows
             </Button>
             <Button
-              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 h-12 px-8 transition-all duration-300 
+              className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 hover:text-white dark:hover:text-black h-12 px-8 transition-all duration-300
                          border-2 border-transparent hover:border-black dark:hover:border-white 
                          transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               size="lg"
