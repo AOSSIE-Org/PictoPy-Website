@@ -35,19 +35,19 @@ const Navbar: React.FC = () => {
   const navItems = [
     {
       label: tN("documentation"),
-      href: "/documentation",
+      href: "#",
     },
     {
       label: tN("contribute"),
-      href: "/contribute",
+      href: "#",
     },
     {
       label: tN("aboutUs"),
-      href: "/about",
+      href: "#",
     },
     {
       label: tN("contact"),
-      href: "/contact",
+      href: "#",
     },
   ];
   useEffect(() => {
@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
               className="h-9 px-3 rounded-lg flex items-center gap-2 text-sm font-medium transition"
             >
               <a href={link ?? "#"} target="_blank" rel="noopener noreferrer">
-                <Icon size={17} />
+                <Icon size={17} aria-label="Download" />
                 Download
               </a>
             </Button>
