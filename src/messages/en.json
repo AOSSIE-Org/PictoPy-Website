@@ -95,6 +95,49 @@
         "description": "Check out our YouTube channel to learn about PictoPy and even more projects.",
         "button": "Subscribe"
       }
+    },
+
+    "faq": {
+      "title": "PictoPy FAQs",
+      "description": "Everything you need to know about PictoPy's smart photo organization and AI-powered tagging features.",
+      "items": [
+        {
+          "question": "What is PictoPy?",
+          "answer": "PictoPy is an intelligent photo management application that uses advanced AI to automatically tag and organize your photos based on detected objects, faces, and scenes. It's designed to make your photo collection searchable and easily accessible while maintaining your privacy."
+        },
+        {
+          "question": "How does the smart tagging feature work?",
+          "answer": "Our smart tagging system uses AI-powered object detection and facial recognition to analyze your photos. It automatically identifies people, objects, scenes, and activities in your images, creating searchable tags without requiring manual input. All processing happens on your device for maximum privacy."
+        },
+        {
+          "question": "Is my privacy protected when using PictoPy?",
+          "answer": "Absolutely. PictoPy is built with a privacy-first approach. All image analysis and processing is performed locally on your device, and your photos never leave your control unless you explicitly choose to share them. We don't store or access your photos on our servers."
+        },
+        {
+          "question": "What platforms does PictoPy support?",
+          "answer": "PictoPy is designed for cross-platform compatibility. It's available on iOS, Android, macOS, and Windows, allowing you to manage your photo collection seamlessly across all your devices with synchronization options that respect your privacy preferences."
+        }
+      ]
+    },
+
+    "cta": {
+      "title": "Take the powerful way.",
+      "description": "Download and use PictoPy for free."
+    },
+
+    "footer": {
+      "product": "Product",
+      "software": "Software",
+      "website": "Website",
+      "parentOrg": "Parent Org",
+      "contribute": "Contribute",
+      "designTools": "Design Tools",
+      "developerTools": "Developer Tools",
+      "projects": "Projects",
+      "community": "Community",
+      "communityStories": "Community Stories",
+      "ambassadors": "Ambassadors",
+      "madeWith": "Made with ♥ by AOSSIE Community"
     }
   },
 

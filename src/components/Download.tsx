@@ -82,7 +82,7 @@ function DownloadButton({ value }: DownloadButtonProps) {
       }}
       className="h-9 px-3 rounded-lg flex items-center gap-2 text-sm font-medium transition"
     >
-      <value.icon />
+      <value.icon aria-label="Download" />
       {value.label}
     </Button>
   );

@@ -4,6 +4,18 @@ This repository is a high-performance webpage built on **Next.js 16 (App Router)
 
 ---
 
+## Website Navigation
+
+- [Documentation](https://pictopy.aossie.org/documentation)
+- [Contribute](https://pictopy.aossie.org/contribute)
+- [About Us](https://pictopy.aossie.org/about)
+- [Contact](https://pictopy.aossie.org/contact)
+
+## Project Resources
+
+- [PictoPy Website](https://pictopy.aossie.org/)
+- [PictoPy Website GitHub Repository](https://github.com/AOSSIE-Org/PictoPy-Website)
+
 ## 📂 Project Architecture
 
 - **`src/app/[locale]/`**: Localized dynamic route group. All pages and layouts live here.

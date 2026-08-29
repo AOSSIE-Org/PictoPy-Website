@@ -7,6 +7,10 @@ import MockUpWithDesc from "@/components/MockUpWithDesc";
 import Metrics from "@/components/Metrics";
 import SocialMediaCTA from "@/components/SocialMediaCTA";
 import MacMockDesc from "@/components/MacMockDesc";
+import FAQ from "./FAQ";
+import CTA from "./CTA";
+import PictoPyText from "./PictpPyText";
+import Footer from "./ui/Footer";
 
 export default function HomePage() {
   return (
@@ -18,6 +22,10 @@ export default function HomePage() {
       <MockUpWithDesc image={image} />
       <Metrics />
       <SocialMediaCTA />
+      <FAQ />
+      <CTA />
+      <PictoPyText />
+      <Footer />
     </>
   );
 }

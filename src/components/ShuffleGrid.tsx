@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { squareData } from "@/const/const";
+import Image from "next/image";
 
 const shuffle = (array: (typeof squareData)[0][]) => {
   let currentIndex = array.length,
@@ -19,7 +20,6 @@ const shuffle = (array: (typeof squareData)[0][]) => {
 
   return array;
 };
-
 
 const ShuffleGrid = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -49,13 +49,18 @@ const ShuffleGrid = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 0.1, scale: 1 }}
             transition={{ duration: 1.5, type: "spring" }}
-            className="w-full h-full"
-            style={{
-              backgroundImage: `url(${sq.src})`,
-              backgroundSize: "cover",
-            }}
-          />
-        ))}{" "}
+            className="w-full h-full relative overflow-hidden"
+          >
+            <Image
+              src={sq.src}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 25vw, 25vw"
+              className="object-cover"
+              priority={sq.id < 4}
+            />
+          </motion.div>
+        ))}
       </div>
       <div className="absolute top-119.25 h-119.25 visible min-[411px]:hidden inset-0 grid bg-bg grid-cols-4 grid-rows-4 gap-2 z-0 overflow-hidden">
         {squares.map((sq) => (
@@ -65,13 +70,18 @@ const ShuffleGrid = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 0.1, scale: 1 }}
             transition={{ duration: 1.5, type: "spring" }}
-            className="w-full h-full"
-            style={{
-              backgroundImage: `url(${sq.src})`,
-              backgroundSize: "cover",
-            }}
-          />
-        ))}{" "}
+            className="w-full h-full relative overflow-hidden"
+          >
+            <Image
+              src={sq.src}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 25vw, 25vw"
+              className="object-cover"
+              priority={sq.id < 4}
+            />
+          </motion.div>
+        ))}
       </div>
     </>
   );

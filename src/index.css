@@ -4,9 +4,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-body {
-    font-family: "Inter", sans-serif;
-}
 
 @theme {
     --color-bg: var(--bg);
