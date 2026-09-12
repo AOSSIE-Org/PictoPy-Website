@@ -180,7 +180,7 @@ const generateSquares = () => {
 };
 
 const ShuffleGrid = () => {
-  const timeoutRef = useRef<any>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [squares, setSquares] = useState(generateSquares());
 
   useEffect(() => {
