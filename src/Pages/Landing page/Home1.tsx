@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const ShuffleHero = () => {
   // Function to scroll to downloads section
@@ -183,17 +183,20 @@ const ShuffleGrid = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [squares, setSquares] = useState(generateSquares());
 
+  const shuffleSquares = useCallback(() => {
+    setSquares(generateSquares());
+    timeoutRef.current = setTimeout(shuffleSquares, 3000);
+  }, []);
+
   useEffect(() => {
     shuffleSquares();
 
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
-
-  const shuffleSquares = () => {
-    setSquares(generateSquares());
-
-    timeoutRef.current = setTimeout(shuffleSquares, 3000);
-  };
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [shuffleSquares]);
 
   return (
     <div className="grid grid-cols-4 grid-rows-4 h-[450px] gap-1">
