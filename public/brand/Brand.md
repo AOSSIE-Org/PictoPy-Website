@@ -31,6 +31,17 @@ The browser tab favicon for this project:
 - **Branding Asset:** [pictopy_favicon.ico](brand/icons/favicon.ico)
 - **Web App Asset Path:** `/brand/icons/favicon.ico`
 
+### 3. Product Screenshots
+
+App screenshots displayed inside the website's Mac-style mockups:
+
+| Asset | Web App Path | Used In |
+| :--- | :--- | :--- |
+| `hero.jpg` | `/brand/assets/hero.jpg` | Hero mockup (Image Gallery view) |
+| `1.jpg` | `/brand/assets/1.jpg` | Feature mockup (Albums view) |
+| `2.jpg` | `/brand/assets/2.jpg` | Features card — Memories |
+| `3.jpg` | `/brand/assets/3.jpg` | Features card — AI Tagging |
+
 ---
 
 ## ✍️ Typography

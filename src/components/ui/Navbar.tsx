@@ -8,8 +8,7 @@ import React, {
 } from "react";
 import { Button } from "@/components/ui/button";
 import { ThemeContext, ThemeOptions } from "@/context/theme-provider";
-import { FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
-import { Link } from "@/i18n/navigation";
+import { FiArrowUpRight, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import PictoPyLogo from "@/assets/pictopy_logo.svg";
 import { platformConfig } from "@/const/const";
 import { usePlatform } from "@/hooks/usePlatform";
@@ -18,6 +17,74 @@ import Image from "next/image";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { useTranslations } from "next-intl";
 
+type NavItem = {
+  key: "documentation" | "contribute" | "aboutUs" | "contact";
+  href?: string;
+  targetId?: string;
+};
+
+// No extra pages on the site: external docs open in a new tab,
+// the rest smooth-scroll to their homepage section.
+const navConfig: NavItem[] = [
+  {
+    key: "documentation",
+    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/README.md",
+  },
+  {
+    key: "contribute",
+    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/CONTRIBUTING.md",
+  },
+  { key: "aboutUs", targetId: "faq" },
+  { key: "contact", targetId: "community" },
+];
+
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+function NavItemLink({
+  item,
+  label,
+  className,
+  onNavigate,
+}: {
+  item: NavItem;
+  label: string;
+  className: string;
+  onNavigate?: () => void;
+}) {
+  if (item.href) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${className} inline-flex items-center justify-center gap-1`}
+        onClick={onNavigate}
+      >
+        {label}
+        <FiArrowUpRight size={13} aria-hidden="true" className="opacity-70" />
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={`${className} cursor-pointer`}
+      onClick={() => {
+        onNavigate?.();
+        scrollToSection(item.targetId!);
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
 const Navbar: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
@@ -25,31 +92,12 @@ const Navbar: React.FC = () => {
   const isDark = theme === ThemeOptions.Dark;
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
-  const platform = usePlatform();
-  const { link, loading } = useDownloadLink(platform.platform);
-  const { icon: Icon } = platformConfig[platform.platform];
+  const { platform } = usePlatform();
+  const { link } = useDownloadLink(platform ?? "windows");
+  const Icon = platform ? platformConfig[platform].icon : null;
 
   const t = useTranslations("ThemeToggle");
   const tN = useTranslations("Home.Navbar");
-
-  const navItems = [
-    {
-      label: tN("documentation"),
-      href: "/documentation",
-    },
-    {
-      label: tN("contribute"),
-      href: "/contribute",
-    },
-    {
-      label: tN("aboutUs"),
-      href: "/about",
-    },
-    {
-      label: tN("contact"),
-      href: "/contact",
-    },
-  ];
   useEffect(() => {
     const trueFunction = () => {
       setMounted(true);
@@ -60,7 +108,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="sticky top-4 z-999 w-full flex justify-center">
       <div className="h-19 w-full rounded-2xl border border-border flex items-center justify-between px-4  min-[1250px]:px-8 bg-[linear-gradient(#F8F9FA,#F8F9FA)] dark:bg-[linear-gradient(93.78deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] shadow-[inset_0_1px_1px_1px_#00000026] dark:shadow-[inset_0_1px_1px_1px_#FFFFFF26]">
-        {/* Logo */}
+        {/* Logo + Language switcher */}
         <div className="flex items-center gap-2">
           <Image
             src={PictoPyLogo.src}
@@ -74,23 +122,23 @@ const Navbar: React.FC = () => {
           <span className="text-primary text-[20px] font-semibold tracking-tight select-none">
             PictoPy
           </span>
+
+          <div className="hidden min-[1000px]:flex items-center">
+            <div className="mx-3 h-6 w-px border border-text3" />
+            <LanguageSwitcher />
+          </div>
         </div>
 
         {/* Navigation Links */}
         <div className="hidden min-[1000px]:flex items-center gap-8 font-medium text-[14px] text-text3">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="transition hover:text-text3/70"
-            >
-              {item.label}
-            </Link>
+          {navConfig.map((item) => (
+            <NavItemLink
+              key={item.key}
+              item={item}
+              label={tN(item.key)}
+              className="relative transition-colors duration-200 hover:text-text after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-current after:transition-all after:duration-300 hover:after:w-full"
+            />
           ))}
-
-          <div className="relative">
-            <LanguageSwitcher />
-          </div>
         </div>
 
         {/* Right Actions */}
@@ -108,15 +156,14 @@ const Navbar: React.FC = () => {
             )}
           </Button>
           <div className="mx-3 h-6 w-px border border-text3" />
-          {mounted && (
+          {mounted && Icon && (
             <Button
               asChild
-              disabled={loading || !link}
               className="h-9 px-3 rounded-lg flex items-center gap-2 text-sm font-medium transition"
             >
-              <a href={link ?? "#"} target="_blank" rel="noopener noreferrer">
+              <a href={link} download>
                 <Icon size={17} />
-                Download
+                {tN("download")}
               </a>
             </Button>
           )}
@@ -151,31 +198,13 @@ type MobileSidebarProps = {
 function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const isDark = theme === ThemeOptions.Dark;
-  const platform = usePlatform();
-  const { link, loading } = useDownloadLink(platform.platform);
-  const { icon: Icon } = platformConfig[platform.platform];
+  const { platform } = usePlatform();
+  const { link } = useDownloadLink(platform ?? "windows");
+  const Icon = platform ? platformConfig[platform].icon : null;
   const [mounted, setMounted] = useState(false);
   const t = useTranslations("ThemeToggle");
   const tN = useTranslations("Home.Navbar");
 
-  const navItems = [
-    {
-      label: tN("documentation"),
-      href: "/documentation",
-    },
-    {
-      label: tN("contribute"),
-      href: "/contribute",
-    },
-    {
-      label: tN("aboutUs"),
-      href: "/about",
-    },
-    {
-      label: tN("contact"),
-      href: "/contact",
-    },
-  ];
   useEffect(() => {
     const trueFunction = () => {
       setMounted(true);
@@ -230,15 +259,14 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
 
         {/* Navigation */}
         <div className="flex flex-col p-4 font-medium">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="rounded-lg px-3 py-3 text-text3 transition hover:text-text3/70 hover:bg-muted"
-              onClick={() => setSidebarOpen(false)}
-            >
-              {item.label}
-            </Link>
+          {navConfig.map((item) => (
+            <NavItemLink
+              key={item.key}
+              item={item}
+              label={tN(item.key)}
+              className="rounded-lg px-3 py-3 text-text3 transition hover:text-text3/70 hover:bg-muted text-center"
+              onNavigate={() => setSidebarOpen(false)}
+            />
           ))}
 
           <div className="relative place-self-center">
@@ -257,24 +285,23 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
             {isDark ? (
               <>
                 <FiSun size={22} />
-                <b className="text-text">Toggle Light</b>{" "}
+                <b className="text-text">{t("toggleLight")}</b>{" "}
               </>
             ) : (
               <>
                 <FiMoon size={22} fill="none" />
-                <b className="text-text">Toggle Dark</b>{" "}
+                <b className="text-text">{t("toggleDark")}</b>{" "}
               </>
             )}
           </Button>
-          {mounted && (
+          {mounted && Icon && (
             <Button
               asChild
-              disabled={loading || !link}
               className="h-11 w-full rounded-xl flex items-center justify-center gap-2 shadow-sm"
             >
-              <a href={link ?? "#"} target="_blank" rel="noopener noreferrer">
+              <a href={link} download>
                 <Icon size={17} />
-                Download
+                {tN("download")}
               </a>
             </Button>
           )}

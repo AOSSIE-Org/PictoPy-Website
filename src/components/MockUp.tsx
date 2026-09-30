@@ -1,13 +1,14 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { FaApple } from "react-icons/fa";
 import { FaWifi } from "react-icons/fa6";
 import { IoBatteryFullOutline } from "react-icons/io5";
+import MacClock from "./MacClock";
 
 export default function MacMockup({
   image,
   imageClassName,
 }: {
-  image: StaticImageData;
+  image: string;
   imageClassName?: string;
 }) {
   return (
@@ -28,9 +29,9 @@ export default function MacMockup({
             aria-hidden="true"
           >
             {/* Top Bar */}
-            <div className="flex h-10 items-center justify-between px-2 min-[480px]:px-3 sm:px-5 text-[10px] min-[480px]:text-[11px] sm:text-[12px] font-medium text-[#FFFFFF] dark:text-[#5F6061] overflow-hidden select-none">
+            <div className="flex h-10 items-center justify-between bg-[#171717] px-2 xs:px-3 sm:px-5 text-[10px] xs:text-[11px] sm:text-[12px] font-medium text-[#FFFFFF] dark:text-[#5F6061] overflow-hidden select-none">
               {/* Right Section */}
-              <div className="flex min-w-0 items-center gap-2 min-[480px]:gap-3 sm:gap-4">
+              <div className="flex min-w-0 items-center gap-2 xs:gap-3 sm:gap-4">
                 <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
                   <FaApple size={12} fill="currentColor" />
                   <span>PictoPy</span>
@@ -41,35 +42,33 @@ export default function MacMockup({
                 <span className="truncate">View</span>
                 <span className="truncate">Go</span>
                 <span className="hidden min-[420px]:block">Window</span>
-                <span className="hidden min-[480px]:block">Help</span>
+                <span className="hidden xs:block">Help</span>
               </div>
 
               {/* Left section */}
-              <div className="flex shrink-0 items-center gap-1.5 min-[480px]:gap-2 sm:gap-4">
+              <div className="flex shrink-0 items-center gap-1.5 xs:gap-2 sm:gap-4">
                 <FaWifi size={13} className="sm:h-3.75 sm:w-3.75" aria-label="WiFi icon" />
                 <IoBatteryFullOutline
                   size={17}
                   className="sm:h-4.75 sm:w-4.75"
                 />
 
-                <span className="hidden sm:block text-[14px] font-semibold">
-                  Mon March 02
-                </span>
-
-                <span className="text-[10px] min-[480px]:text-[11px] sm:text-[12px]">
-                  9:41 AM
-                </span>
+                <MacClock />
               </div>
             </div>
 
-            {/* Mockup Area */}
-            <Image
-              src={image}
-              alt="PictoPy mockup preview"
-              aria-hidden="true"
-              loading="eager"
-              className={`w-full object-contain bg-[#07080A] ${imageClassName}`}
-            />
+            {/* Mockup Area (wrapper clips any negative-margin crop of the screenshot) */}
+            <div className="overflow-hidden">
+              <Image
+                src={image}
+                alt="PictoPy mockup preview"
+                aria-hidden="true"
+                loading="eager"
+                width={1920}
+                height={1080}
+                className={`w-full object-cover bg-[#171717] ${imageClassName}`}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useDownloadLink } from "@/hooks/useDownloadLink";
 import { usePlatform } from "@/hooks/usePlatform";
+import { FALLBACK_RELEASE, GITHUB_RELEASE_API } from "@/const/const";
 import { useLocale, useTranslations } from "next-intl";
 import type { IconType } from "react-icons";
 import { DiWindows } from "react-icons/di";
@@ -41,7 +42,7 @@ const Download: FC = () => {
   const platformArray = Object.values(platformConfig);
 
   return (
-    <section className="w-full py-13 transition-colors duration-300  overflow-hidden">
+    <section className="w-full py-8 sm:py-13 transition-colors duration-300 overflow-hidden">
       {isMobile ? (
         <p className="font-mono text-center font-normal text-muted-foreground text-xs text-[#1e1e1e] dark:text-[#C1C1C1]">
           {t("mobileDownload")}
@@ -70,20 +71,17 @@ export default Download;
 
 // CTA (Download button)
 function DownloadButton({ value }: DownloadButtonProps) {
-  const { link, loading } = useDownloadLink(value.platform);
+  const { link } = useDownloadLink(value.platform);
 
   return (
     <Button
-      disabled={loading}
-      onClick={() => {
-        if (link) {
-          window.open(link, "_blank", "noopener,noreferrer");
-        }
-      }}
-      className="h-9 px-3 rounded-lg flex items-center gap-2 text-sm font-medium transition"
+      asChild
+      className="h-9 px-3 rounded-lg flex items-center gap-2 text-sm font-medium cursor-pointer transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]"
     >
-      <value.icon />
-      {value.label}
+      <a href={link} download>
+        <value.icon />
+        {value.label}
+      </a>
     </Button>
   );
 }
@@ -101,41 +99,51 @@ type VersionBarProps = {
 
 // Version below CTA
 function VersionBar({ latest, multiOsSupport, freeForever }: VersionBarProps) {
+  const locale = useLocale();
+
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(locale, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+  // Pinned release info shown immediately; replaced by live data when the
+  // GitHub API responds (it is rate-limited for unauthenticated clients).
   const [release, setRelease] = useState<ReleaseData>({
-    version: "Loading...",
-    date: "Loading...",
+    version: FALLBACK_RELEASE.version,
+    date: formatDate(FALLBACK_RELEASE.publishedAt),
   });
 
-  const locale = useLocale();
   useEffect(() => {
+    let cancelled = false;
+
     async function getRelease() {
       try {
-        const res = await fetch(
-          "https://api.github.com/repos/AOSSIE-Org/PictoPy/releases/latest",
-        );
+        const res = await fetch(GITHUB_RELEASE_API);
 
         if (!res.ok) throw new Error("Failed");
 
         const data = await res.json();
 
+        if (cancelled) return;
+
         setRelease({
           version: data.tag_name,
-          date: new Date(data.published_at).toLocaleDateString(locale, {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }),
+          date: formatDate(data.published_at),
         });
       } catch {
-        setRelease({
-          version: "v1.0.0",
-          date: "Sep 7, 2025",
-        });
+        // Keep the pinned fallback release info.
       }
     }
 
     getRelease();
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [locale]);
 
   return (
     <section className="font-mono w-full flex justify-center py-4">

@@ -102,7 +102,8 @@ It runs entirely offline, keeping your photos and their analysis private — no 
 
 - **Next.js 16 & React 19:** Utilizing the latest Server Components, Client Actions, and async routing paradigms.
 - **Tailwind CSS v4:** Modern utility-first styling with native CSS variables and streamlined postcss integrations.
-- **Dual Theme System:** Flash-free light, dark, and system preferred themes using `next-themes` and Tailwind CSS v4 custom variants.
+- **Dual Theme System:** Flash-free light and dark themes using a custom React theme provider ([`src/context/theme-provider.tsx`](src/context/theme-provider.tsx)) and Tailwind CSS v4 class-based custom variants.
+- **Complete Landing Page:** Hero with live download links (GitHub Releases API), Mac-style app mockups with a live locale-aware menu-bar clock, feature cards, metrics, community CTAs, FAQ accordion, and a footer with an interactive letter-animated watermark.
 - **Robust i18n & l10n:** Deeply integrated multi-language support:
   - Automatic locale detection based on browser preferences.
   - Subpath routing (e.g., `/hi` for Hindi, and unprefixed `/` for English as default) with clean `as-needed` URL prefixing.
@@ -137,20 +138,23 @@ Here is a breakdown of the key i18n directories and files:
 ├── package-lock.json
 ├── postcss.config.mjs
 ├── public/                         # Public static assets
-│   ├── .well-known/
 │   ├── llms.txt
 │   ├── robots.txt
 │   └── brand/
 │       ├── Brand.md
+│       ├── assets/                 # App screenshots used in the mockups
+│       │   ├── hero.jpg
+│       │   ├── 1.jpg
+│       │   ├── 2.jpg
+│       │   └── 3.jpg
 │       └── icons/
 │           ├── aossie_logo.svg
 │           ├── pictopy_logo.svg
 │           ├── stability_nexus_logo.svg
 │           └── favicon.ico
 ├── src/                            # Source files
-│   ├── App.tsx
-│   ├── Pages/                      # (legacy or extra pages folder if used)
 │   ├── app/
+│   │   ├── page.tsx                # Root redirect
 │   │   ├── sitemap.ts
 │   │   └── [locale]/
 │   │       ├── globals.css
@@ -158,26 +162,32 @@ Here is a breakdown of the key i18n directories and files:
 │   │       ├── page.tsx
 │   │       ├── error.tsx
 │   │       └── not-found.tsx
-│   ├── assets/
+│   ├── assets/                     # Imported logos (SVG/PNG)
 │   ├── components/
-│   │   ├── Download.tsx
-│   │   ├── Hero.tsx
-│   │   ├── LanguageSwitcher.tsx
+│   │   ├── Download.tsx            # Platform download buttons + release version bar
+│   │   ├── Faq.tsx                 # FAQ accordion
+│   │   ├── Features.tsx            # Feature cards (AI Tagging, Memories)
+│   │   ├── Footer.tsx              # Download CTA, link columns, socials, copyright
+│   │   ├── FooterWatermark.tsx     # Interactive "PictoPy" letter animation
+│   │   ├── Hero.tsx                # Headline, badge, Powered by AOSSIE
+│   │   ├── HomePage.tsx            # Section composition for the homepage
+│   │   ├── LanguageSwitcher.tsx    # Designed locale dropdown
+│   │   ├── MacClock.tsx            # Live locale-aware menu-bar clock
 │   │   ├── MacMockDesc.tsx
 │   │   ├── Metrics.tsx
-│   │   ├── MockUp.tsx
-│   │   ├── MockUpWithDesc.tsx
-│   │   ├── ShuffleGrid.tsx
+│   │   ├── MockUp.tsx              # Mac-style window frame for screenshots
+│   │   ├── MockUpWithDesc.tsx      # Mockup + testimonial section
+│   │   ├── ShuffleGrid.tsx         # Animated background image grid
 │   │   ├── SocialMediaCTA.tsx
-│   │   ├── ThemeToggle.tsx
-│   │   └── providers/
-│   │       └── lenis-provider.tsx
+│   │   ├── providers/
+│   │   │   └── lenis-provider.tsx
 │   │   └── ui/
 │   │       ├── Navbar.tsx
 │   │       └── button.tsx
 │   ├── config/
 │   ├── const/
 │   ├── context/
+│   │   └── theme-provider.tsx      # Light/dark theme context
 │   ├── hooks/
 │   ├── i18n/
 │   │   ├── metadata.ts
@@ -185,10 +195,9 @@ Here is a breakdown of the key i18n directories and files:
 │   │   ├── request.ts
 │   │   └── routing.ts
 │   ├── index.css
-│   ├── messages/
-│   │   ├── en.json
-│   │   └── hi.json
-│   └── proxy.ts
+│   └── messages/
+│       ├── en.json
+│       └── hi.json
 ├── tsconfig.json
 └── .gitignore
 
@@ -196,9 +205,9 @@ Here is a breakdown of the key i18n directories and files:
 
 Notes:
 
-- The tree emphasizes the files and directories found at the time of scanning. Remove or add files here if the repository changes.
-- The repo uses a localized App Router layout under src/app/[locale] and several reusable UI components under src/components.
-- If you'd like, the README can be expanded to include brief descriptions for each top-level directory or to show a deeper tree for any particular area (for example, a full listing of src/components or public/brand/icons).
+- The repo uses a localized App Router layout under `src/app/[locale]` and reusable UI components under `src/components`.
+- All user-facing strings live in `src/messages/{en,hi}.json`; components never hard-code copy.
+- The site is fully static (`output: "export"`), so anything dynamic (release version, download links, the mockup clock) is fetched or computed client-side.
 
 ---
 
