@@ -1,6 +1,6 @@
 "use client";
 import { FaDiscord, FaGithub, FaYoutube } from "react-icons/fa";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 // Data to display in SocialMediaCTA section
@@ -38,7 +38,10 @@ export default function SocialMediaCTA() {
   const t = useTranslations("Home.SocialMediaCTA");
 
   return (
-    <section className="mt-22.5 lg:mt-30 flex flex-col gap-14 w-full">
+    <section
+      id="community"
+      className="mt-40 lg:mt-52 flex flex-col gap-14 w-full scroll-mt-28"
+    >
       <h2 className="place-self-center max-w-136 text-center tracking-[0.2px] font-medium text-[18px] md:text-[20px] text-[#606060] dark:text-text2">
         <span className="text-black dark:text-white">{t("heading")} </span>
         &nbsp;
@@ -48,13 +51,16 @@ export default function SocialMediaCTA() {
       {/* Social Media CTA section */}
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
         {cards.map((card) => (
-          <div
+          <a
             key={card.title}
-            className="flex min-h-40 md:min-h-42.5 flex-col gap-4.5 rounded-xl border border-[#00000029] bg-[linear-gradient(112.57deg,rgba(17,18,20,0.075)_4.87%,rgba(12,13,15,0.09)_75.88%)] shadow-[inset_0px_1px_1px_1px_rgba(255,255,255,0.15)] dark:border-white/6 dark:bg-[linear-gradient(112.57deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] dark:shadow-[inset_0px_1px_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-[10px] px-6 py-6.5 transition-all duration-300 leading-[22.4px]"
+            href={card.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex min-h-40 md:min-h-42.5 cursor-pointer flex-col gap-4.5 rounded-xl border border-[#00000029] bg-[linear-gradient(112.57deg,rgba(17,18,20,0.075)_4.87%,rgba(12,13,15,0.09)_75.88%)] shadow-[inset_0px_1px_1px_1px_rgba(255,255,255,0.15)] dark:border-white/6 dark:bg-[linear-gradient(112.57deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] dark:shadow-[inset_0px_1px_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-[10px] px-6 py-6.5 transition-all duration-300 leading-[22.4px] hover:-translate-y-1 hover:border-black/25 hover:shadow-[0_12px_36px_rgba(0,0,0,0.12)] dark:hover:border-white/15 dark:hover:shadow-[0_12px_36px_rgba(0,0,0,0.55)]"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="text-[28px]">{card.icon}</div>
+                <div className="text-[28px] transition-transform duration-300 group-hover:scale-110">{card.icon}</div>
 
                 <h3 className="text-[20px] font-medium leading-none dark:text-white text-black">
                   {t(card.title)}
@@ -75,17 +81,11 @@ export default function SocialMediaCTA() {
               {t(card.description)}
             </p>
 
-            <button
-              type="button"
-              className="inline-flex w-fit items-center gap-2 text-[14px] font-medium text-black dark:text-white transition-all hover:gap-3"
-              onClick={() => {
-                window.open(card.link, "_blank", "noopener,noreferrer");
-              }}
-            >
+            <span className="inline-flex w-fit items-center gap-2 text-[14px] font-medium text-black dark:text-white transition-all duration-300 group-hover:gap-3">
               {t(card.action)}
-              <ArrowRight size={16} strokeWidth={2.5} />
-            </button>
-          </div>
+              <ArrowUpRight size={16} strokeWidth={2.5} />
+            </span>
+          </a>
         ))}
       </div>
     </section>

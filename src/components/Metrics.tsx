@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 async function Metrics() {
   const t = await getTranslations("Home.Metrics");
   return (
-    <section className="flex flex-col gap-14 mt-24">
+    <section className="flex flex-col gap-14 mt-40 lg:mt-52">
       {/* Heading */}
       <h2 className="text-center font-semibold text-4xl min-[640px]:text-[64px] leading-18 bg-[linear-gradient(91.3deg,#202020_71.33%,#8F8F8F_152.13%)] bg-clip-text text-transparent [text-shadow:0px_4px_4px_#00000026] dark:shadow-[0px_4px_4px_0px_#00000026] dark:text-[#FFFFFF]">
         {t("metricsHeading")}
@@ -15,7 +15,7 @@ async function Metrics() {
         {metricsData.map((item, index) => (
           <div
             key={item.label}
-            className={`relative h-78.25 border-b-0 border border-[#E8E8E8] dark:border-[#16230C] rounded-t-[13px] bg-bg dark:bg-[#0C0C0C] max-[640px]:dark:bg-[#121212] p-5 font-medium leading-5 tracking-normal`}
+            className={`group relative h-78.25 border-b-0 border border-[#E8E8E8] dark:border-[#16230C] rounded-t-[13px] bg-bg dark:bg-[#0C0C0C] max-[640px]:dark:bg-[#121212] p-5 font-medium leading-5 tracking-normal transition-colors duration-300 hover:bg-[#FAFAFA] dark:hover:bg-[#111411] max-[640px]:dark:hover:bg-[#161816]`}
           >
             {/* Right separator (desktop only) */}
             {index < 3 && (
@@ -45,7 +45,7 @@ async function Metrics() {
               {t(item.label)}
             </p>
 
-            <h3 className="mt-2 text-4xl font-bold text-black dark:text-white">
+            <h3 className="mt-2 text-4xl font-bold text-black transition-transform duration-300 origin-left group-hover:scale-105 dark:text-white">
               {t(item.value)}
             </h3>
 

@@ -14,7 +14,7 @@ Find out more at https://pictopy.aossie.org/.
 
 ## 🛠️ Stack & Commands
 
-- **Stack:** Next.js 16.2.11 App Router (Turbopack), React 19, Tailwind CSS v4, `next-intl` (i18n), `next-themes` (light/dark state manager).
+- **Stack:** Next.js 16.2.11 App Router (Turbopack), React 19, Tailwind CSS v4, `next-intl` (i18n), custom theme context ([`src/context/theme-provider.tsx`](src/context/theme-provider.tsx)) for light/dark state.
 - **Build:** `npm run build`
 - **Develop:** `npm run dev`
 
@@ -25,6 +25,8 @@ Find out more at https://pictopy.aossie.org/.
 - **Class-Based Dark Mode:** Tailwind CSS v4 is configured for class-based overrides using `@custom-variant dark (&:where(.dark, .dark *))` in [`globals.css`](src/app/[locale]/globals.css).
 - **Semantic Tokens:** Do **not** write inline layout dark utilities (e.g., `dark:bg-black` or `dark:text-zinc-50`). Always write semantic classes linked to the central theme variables (e.g., `bg-background-primary`, `text-foreground-primary`).
 - **Typography:** The default font family is **Inter**. It is mapped to `--font-sans` in globals.css.
+- **Breakpoint gotcha:** Never mix px-based arbitrary variants (e.g., `min-[900px]:`) with rem-based named breakpoints (`sm:`, `lg:`) on the same property — Tailwind v4 cannot order them, so the wrong rule can win. Stick to the named breakpoints.
+- **Copy lives in messages:** All user-facing strings must go through `next-intl` catalogs in [`src/messages/`](src/messages/) (`en.json` + `hi.json`) — never hard-code visible text in components.
 
 ---
 

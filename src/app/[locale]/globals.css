@@ -2,6 +2,10 @@
 
 
 @theme {
+  /* Extra small breakpoint (480px) kept in rem so Tailwind can order it
+     against the built-in rem-based breakpoints. */
+  --breakpoint-xs: 30rem;
+
   /* Bind Tailwind v4 variables directly to semantic CSS variables */
   --color-background-primary: var(--background);
   --color-background-secondary: var(--background-secondary);
