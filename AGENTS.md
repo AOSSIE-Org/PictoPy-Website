@@ -14,7 +14,7 @@ Find out more at https://pictopy.aossie.org/.
 
 ## 🛠️ Stack & Commands
 
-- **Stack:** Next.js 16.2.11 App Router (Turbopack), React 19, Tailwind CSS v4, `next-intl` (i18n), custom theme context ([`src/context/theme-provider.tsx`](src/context/theme-provider.tsx)) for light/dark state.
+- **Stack:** Next.js 16.4.3 App Router (Turbopack), React 19, Tailwind CSS v4, `next-intl` (i18n), custom theme context ([`src/context/theme-provider.tsx`](src/context/theme-provider.tsx)) for light/dark state.
 - **Build:** `npm run build` (static export to `out/`)
 - **Develop:** `npm run dev`
 - **Lint:** `npm run lint`
