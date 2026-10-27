@@ -1,0 +1,196 @@
+{
+  "Home": {
+    "heading": "The most advanced Open-Source Gallery",
+    "metaTitle": "PictoPy - AI Powered Open-Source Photo Gallery",
+    "metaDescription": "PictoPy is an AI-powered open-source desktop gallery application built with Tauri, React, Rust, and Python for intelligent photo management.",
+
+    "Navbar": {
+      "documentation": "Documentation",
+      "contribute": "Contribute",
+      "aboutUs": "About Us",
+      "contact": "Contact",
+      "download": "Download",
+      "backToTop": "PictoPy, back to top",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+
+    "Hero": {
+      "featureBadge": "Feature: Introducing AI Tagging",
+      "downloadNow": "Download now",
+      "poweredBy": "Made by <org>AOSSIE</org>",
+
+      "heroTitle": "The most advanced",
+      "heroSubtitle": "Open-Source Gallery",
+      "heroDescriptionHighlight": "Intelligent Gallery Management.",
+      "heroDescription": "Advanced AI analyzes and organizes your photos locally, keeping every file secure and under your control."
+    },
+
+    "Download": {
+      "mobileDownload": "You can use PictoPy on any Personal Computer.",
+      "mobileDownloadText": "Be it Windows, Mac or Linux.",
+
+      "downloadMac": "Download for Mac",
+      "downloadWindows": "Download for Windows",
+      "downloadLinux": "Download for Linux",
+
+      "latest": "Latest",
+      "multiOsSupport": "Multi-OS Support",
+      "freeForever": "Free Forever"
+    },
+    "MacMockDesc": {
+      "appDescription": "Advanced desktop gallery application powered by Tauri, React, and Rust with a Python backend for intelligent image analysis and seamless management."
+    },
+
+    "MockUpWithDesc": {
+      "featureSectionTitle": "What else can PictoPy do?",
+      "featureSectionDescriptionHighlighting": "Faces, objects and scenes, all tagged automatically.",
+      "featureSectionDescription": "PictoPy analyzes every image locally, groups the people in your photos into albums, recognizes objects and scenes, and makes your entire library searchable with simple words.",
+
+      "reviewButton": "PictoPy Review",
+      "testimonialQuote": "PictoPy shows what open source does best: state-of-the-art AI for everyone's photo library, with privacy built in rather than promised. I'm proud of what this community keeps building.",
+      "testimonialAuthor": "Dr. Bruno Woltzenlogel Paleo",
+      "testimonialLabel": "Founder & Mentor, AOSSIE",
+
+      "featureHeading": "There's a feature for every user's need.",
+      "featureSubheading": "Explore and use your favorite features in PictoPy."
+    },
+
+    "Features": {
+      "tagging": {
+        "tag": "AI Tagging",
+        "title": "Every face, remembered.",
+        "description": "PictoPy scans your library on-device and builds face collections automatically. Click a person to instantly see every photo they appear in. No manual sorting, no cloud."
+      },
+      "memories": {
+        "tag": "Memories",
+        "title": "Revisit this day.",
+        "description": "PictoPy curates memories from your library on its own, resurfacing moments from the same day across the years so your favorite stories are never lost in the scroll."
+      }
+    },
+
+    "Metrics": {
+      "metricsHeading": "Surpasses Expectations",
+
+      "metric1Label": "Privacy",
+      "metric1Value": "100%",
+      "metric1Description": "Fully offline by design. Every photo is analyzed on your device, and nothing is ever uploaded, tracked or shared with a cloud.",
+
+      "metric2Label": "AI Models",
+      "metric2Value": "3+",
+      "metric2Description": "On-device object detection, face recognition and smart clustering power automatic tagging and plain-word search.",
+
+      "metric3Label": "Platforms",
+      "metric3Value": "3",
+      "metric3Description": "Native desktop builds for Windows, macOS and Linux, packaged as one lightweight app with Tauri, React and Rust.",
+
+      "metric4Label": "Cost",
+      "metric4Value": "$0",
+      "metric4Description": "Free and open source, forever. Built in the open by the AOSSIE community, with no subscription, no ads and no lock-in."
+    },
+
+    "SocialMediaCTA": {
+      "heading": "Stay in the loop.",
+      "description": "Join the community and learn how other people get the most out of PictoPy.",
+
+      "discord": {
+        "name": "Discord",
+        "memberCount": "8k",
+        "memberLabel": "members",
+        "description": "Get inside the community and learn how other people use PictoPy.",
+        "button": "Join"
+      },
+
+      "github": {
+        "name": "GitHub",
+        "followerCount": "2k",
+        "followerLabel": "followers",
+        "description": "Keep up to date with the latest releases, features and improvements.",
+        "button": "Star Us"
+      },
+
+      "youtube": {
+        "name": "YouTube",
+        "subscriberCount": "50",
+        "subscriberLabel": "subscribers",
+        "description": "Check out our YouTube channel to learn about PictoPy and even more projects.",
+        "button": "Subscribe"
+      }
+    },
+
+    "Faq": {
+      "title": "PictoPy FAQs",
+      "subtitle": "Everything you need to know about PictoPy's smart photo organization and AI-powered tagging features.",
+
+      "q1": {
+        "question": "What is PictoPy?",
+        "answer": "PictoPy is an intelligent photo management application that uses advanced AI to automatically tag and organize your photos based on detected objects, faces, and scenes. It's designed to make your photo collection searchable and easily accessible while maintaining your privacy."
+      },
+      "q2": {
+        "question": "How does the smart tagging feature work?",
+        "answer": "PictoPy runs state-of-the-art computer-vision models directly on your machine. Object detection recognizes what is in each picture, while face recognition and clustering group photos of the same person together, so you can find any photo with a simple search."
+      },
+      "q3": {
+        "question": "Is my privacy protected when using PictoPy?",
+        "answer": "Yes. PictoPy is fully offline by design. Every photo is analyzed locally on your device, and nothing is ever uploaded, tracked, or shared with a server. Your library never leaves your machine."
+      },
+      "q4": {
+        "question": "What platforms does PictoPy support?",
+        "answer": "PictoPy ships as a native desktop application for Windows, macOS, and Linux. It's built with Tauri, combining a React frontend with a Rust core and a Python backend for AI processing."
+      },
+      "q5": {
+        "question": "How can I contribute to PictoPy?",
+        "answer": "PictoPy is open source and maintained by the AOSSIE community. Head over to the GitHub repository to pick an issue, improve the docs, or join the Discord to discuss ideas. Contributions of every size are welcome."
+      }
+    },
+
+    "Footer": {
+      "ctaTitle": "Take the powerful way.",
+      "ctaSubtitle": "Download and use PictoPy for free.",
+
+      "columns": {
+        "product": "Product",
+        "parentOrg": "Parent Org",
+        "contribute": "Contribute",
+        "projects": "Projects",
+        "umbrellaOrgs": "Umbrella Orgs"
+      },
+
+      "links": {
+        "software": "Software",
+        "website": "Website",
+        "aossie": "AOSSIE",
+        "github": "GitHub",
+        "contributingGuide": "Contributing Guide",
+        "goodFirstIssues": "Good First Issues",
+        "resonate": "Resonate",
+        "checkOutProjects": "Check Out Projects",
+        "djedAlliance": "Djed Alliance",
+        "stabilityNexus": "Stability Nexus"
+      },
+
+      "copyright": "© {year} PictoPy",
+      "madeWithPrefix": "Made with",
+      "madeWithSuffix": "by AOSSIE Community"
+    }
+  },
+
+  "Error": {
+    "title": "Something went wrong",
+    "description": "An unexpected server or client error occurred while rendering the page.",
+    "retry": "Try again"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "home": "Go to Home"
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Change Language"
+  },
+  "ThemeToggle": {
+    "toggleTheme": "Toggle theme",
+    "toggleLight": "Toggle Light",
+    "toggleDark": "Toggle Dark"
+  }
+}

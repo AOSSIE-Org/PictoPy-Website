@@ -1,0 +1,113 @@
+@import "../../index.css";
+
+
+@theme {
+  /* Extra small breakpoint (480px) kept in rem so Tailwind can order it
+     against the built-in rem-based breakpoints. */
+  --breakpoint-xs: 30rem;
+
+  /* Bind Tailwind v4 variables directly to semantic CSS variables */
+  --color-background-primary: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-foreground-primary: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border-default: var(--border);
+  
+  --color-button-primary-bg: var(--button-primary-bg);
+  --color-button-primary-text: var(--button-primary-text);
+  --color-button-primary-border: var(--button-primary-border);
+  --color-button-primary-hover-bg: var(--button-primary-hover-bg);
+  --color-button-primary-hover-border: var(--button-primary-hover-border);
+
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --shadow-card: var(--card-shadow);
+
+  --color-status-error-bg: var(--status-error-bg);
+  --color-status-error-text: var(--status-error-text);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+  --color-status-neutral-text: var(--status-neutral-text);
+  
+  --color-icon-sun: var(--icon-sun);
+  --color-icon-moon: var(--icon-moon);
+  --color-icon-system: var(--icon-system);
+
+  --font-sans: var(--font-inter), var(--font-devanagari), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* --- LIGHT MODE (Default) --- */
+:root {
+  --background: #f5f5f5;
+  --background-secondary: #ffffff;
+  
+  --foreground: #1c1c1c;
+  --foreground-secondary: #121212;
+  --foreground-muted: #4d4d4d;
+  
+  --border: #e2e2e7;
+  
+  --button-primary-bg: #121212;
+  --button-primary-text: #ffffff;
+  --button-primary-border: #121212;
+  --button-primary-hover-bg: #2d2d2d;
+  --button-primary-hover-border: #2d2d2d;
+
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: #e2e2e7;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+
+  --status-error-bg: #fee2e2;
+  --status-error-text: #dc2626;
+  --status-neutral-bg: #f4f4f5;
+  --status-neutral-text: #52525b;
+
+  --icon-sun: #f59e0b;
+  --icon-moon: #818cf8;
+  --icon-system: #71717a;
+}
+
+/* --- DARK MODE --- */
+.dark {
+  --background: #101010;
+  --background-secondary: #000000;
+  
+  --foreground: #d3d3d3;
+  --foreground-secondary: #b4b4b4;
+  --foreground-muted: #7f8188;
+  
+  --border: #1e1e24;
+  
+  --button-primary-bg: #ffffff;
+  --button-primary-text: #101010;
+  --button-primary-border: transparent;
+  --button-primary-hover-bg: #e4e4e7;
+  --button-primary-hover-border: #e4e4e7;
+
+  --card-bg: rgba(22, 22, 22, 0.85);
+  --card-border: #1e1e24;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+  --status-error-bg: rgba(69, 10, 10, 0.5);
+  --status-error-text: #f87171;
+  --status-neutral-bg: #27272a;
+  --status-neutral-text: #a1a1aa;
+
+  --icon-sun: #fbbf24;
+  --icon-moon: #818cf8;
+  --icon-system: #a1a1aa;
+}
+
+
+/* --- GLOBAL STYLES --- */
+html,
+body {
+  max-width: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+}

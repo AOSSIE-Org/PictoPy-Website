@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "PictoPy Website",
+  "name_for_model": "pictopy_website",
+  "description_for_human": "Landing Page for PictoPy software showing internationalization and custom theme toggles.",
+  "description_for_model": "Retrieve settings, theme configuration, and supported locales from the PictoPy website starter.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://pictopy.aossie.org/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "https://pictopy.aossie.org/brand/icons/pictopy_logo.svg",
+  "contact_email": "admin@aossie.org",
+  "legal_info_url": "https://pictopy.aossie.org/legal"
+}

@@ -36,7 +36,7 @@ body:
       label: Resources
       description: Helpful resources for completing this task
       value: |
-        - [Contribution Guide - Start Here!](https://github.com/AOSSIE-Org/TODO/blob/main/CONTRIBUTING.md)
+        - [Contribution Guide - Start Here!](https://github.com/AOSSIE-Org/PictoPy-Website/blob/main/CONTRIBUTING.md)
         - [Discord Channel](https://discord.gg/hjUhu33uAn)
     validations:
       required: false
