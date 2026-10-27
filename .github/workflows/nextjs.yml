@@ -51,16 +51,12 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0 # v4.0.3
         with:
-          node-version: "20"
+          node-version: "22"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
       - name: Setup Pages
+        # No static_site_generator: it would overwrite next.config.ts (output, images, next-intl aliases).
+        # The custom domain is served from the root, so no basePath injection is needed.
         uses: actions/configure-pages@983d7716d0b22a34381e767ed38258fe49d10fc7 # v5.0.0
-        with:
-          # Automatically inject basePath in your Next.js configuration file and disable
-          # server side image optimization (https://nextjs.org/docs/api-reference/next/image#unoptimized).
-          #
-          # You may remove this line if you want to manage the configuration yourself.
-          static_site_generator: next
       - name: Restore cache
         uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
         with:

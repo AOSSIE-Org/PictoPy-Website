@@ -1,35 +1,26 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+import {
+  DEFAULT_PLATFORM,
+  detectPlatform,
+  isMobileUserAgent,
+} from "@/lib/platform";
 
-type Platform = "mac" | "windows" | "linux";
+// The user agent never changes during a session, so there is nothing to subscribe to
+const subscribe = () => () => {};
+const getUserAgent = () => navigator.userAgent;
+// Prerendered HTML has no user agent; React swaps in the client value after hydration
+const getServerUserAgent = () => null;
 
 export function usePlatform() {
-  const [platform, setPlatform] = useState<Platform | null>("windows");
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [mounted, setMounted] = useState<boolean>(false);
+  const userAgent = useSyncExternalStore(subscribe, getUserAgent, getServerUserAgent);
 
-  useEffect(() => {
-    const ua =
-      typeof navigator !== "undefined" ? navigator.userAgent.toLowerCase() : "";
-
-    const mobile = /android|iphone|ipad|ipod|mobile/i.test(ua);
-    setIsMobile(mobile);
-
-    // Mobile devices get no desktop platform: Android UAs also contain
-    // "linux" and iPhone/iPad UAs contain "mac", so they must not fall
-    // through to the desktop checks below.
-    let detectedPlatform: Platform | null = null;
-    if (mobile) detectedPlatform = null;
-    else if (!ua) detectedPlatform = "windows";
-    else if (ua.includes("mac")) detectedPlatform = "mac";
-    else if (ua.includes("win")) detectedPlatform = "windows";
-    else if (ua.includes("linux")) detectedPlatform = "linux";
-    else detectedPlatform = "linux";
-
-    setPlatform(detectedPlatform);
-    setMounted(true);
-  }, []);
-
-  return { platform, isMobile, mounted };
+  if (userAgent === null) {
+    return { platform: DEFAULT_PLATFORM, isMobile: false, mounted: false };
+  }
+  return {
+    platform: detectPlatform(userAgent),
+    isMobile: isMobileUserAgent(userAgent),
+    mounted: true,
+  };
 }
-

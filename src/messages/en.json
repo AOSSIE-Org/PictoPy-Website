@@ -9,7 +9,10 @@
       "contribute": "Contribute",
       "aboutUs": "About Us",
       "contact": "Contact",
-      "download": "Download"
+      "download": "Download",
+      "backToTop": "PictoPy, back to top",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
     },
 
     "Hero": {

@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
 
     steps:
       - name: Checkout repository
@@ -32,6 +32,9 @@ jobs:
 
       - name: Run Lint
         run: npm run lint
+
+      - name: Run tests with coverage (90% threshold)
+        run: npm run test:coverage
 
       - name: Build project
         run: npm run build

@@ -15,8 +15,11 @@ Find out more at https://pictopy.aossie.org/.
 ## 🛠️ Stack & Commands
 
 - **Stack:** Next.js 16.2.11 App Router (Turbopack), React 19, Tailwind CSS v4, `next-intl` (i18n), custom theme context ([`src/context/theme-provider.tsx`](src/context/theme-provider.tsx)) for light/dark state.
-- **Build:** `npm run build`
+- **Build:** `npm run build` (static export to `out/`)
 - **Develop:** `npm run dev`
+- **Lint:** `npm run lint`
+- **Test:** `npm test` · `npm run test:coverage` (90% threshold, enforced in CI)
+- **Testable logic lives in [`src/lib/`](src/lib/):** keep hooks thin and put pure functions there, with unit and fast-check property tests in [`tests/`](tests/).
 
 ---
 
@@ -41,5 +44,6 @@ Find out more at https://pictopy.aossie.org/.
 ## 📦 Project Boundaries
 
 - **Config alias map:** Webpack & Turbopack alias resolvers are manually defined in [`next.config.ts`](next.config.ts) mapping `"next-intl/config"` to our local request setup. Do not import the native `@swc/core` compiler plugin wrapper `createNextIntlPlugin` directly to avoid security policy native module blocks.
-- **Branding Assets:** The official branding logo, favicon, and style specifications reside inside [`brand/`](brand/).
+- **Branding Assets:** The official branding logo, favicon, and style specifications reside inside [`public/brand/`](public/brand/). The social share image is [`public/og-image.png`](public/og-image.png) (1200x630 PNG; never point Open Graph at an SVG).
+- **Root route:** [`src/app/(root)/`](src/app/(root)/) serves the bare `/` with the default locale's metadata and a `<meta http-equiv="refresh">` to `/en`. Do not replace it with `redirect()`, which exports an empty error page.
 

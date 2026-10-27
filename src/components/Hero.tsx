@@ -2,9 +2,12 @@
 
 import { useTranslations } from "next-intl";
 import { FiArrowUpRight } from "react-icons/fi";
+import { useLenis } from "lenis/react";
+import { scrollToSection } from "@/lib/scroll";
 
 export default function Hero() {
   const t = useTranslations("Home.Hero");
+  const lenis = useLenis();
 
   return (
     <section className="flex items-center justify-center gap-5 mt-8 sm:mt-17.5">
@@ -19,12 +22,7 @@ export default function Hero() {
             <div className="mx-1.5 sm:mx-3 h-4.25 w-px border border-[#434345]" />
             <button
               className="cursor-pointer text-[#E5E5E5] dark:text-text3 hover:text-text3/80 whitespace-nowrap"
-              onClick={() => {
-                document.getElementById("downloads-section")?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                });
-              }}
+              onClick={() => scrollToSection("downloads-section", lenis)}
             >
               {t("downloadNow")} →
             </button>

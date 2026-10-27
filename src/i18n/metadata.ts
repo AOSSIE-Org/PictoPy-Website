@@ -23,7 +23,10 @@ export async function generateLocaleMetadata(
       },
     },
     icons: {
-      icon: "/brand/icons/pictopy_logo.svg",
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/brand/icons/pictopy_logo.svg", type: "image/svg+xml" },
+      ],
     },
     openGraph: {
       title: t("metaTitle"),
@@ -31,12 +34,13 @@ export async function generateLocaleMetadata(
       url: localeUrl,
 
       siteName: "AOSSIE",
+      // Social platforms do not render SVG previews, so the share image is a 1200x630 PNG
       images: [
         {
-          url: `${siteUrl}/brand/icons/aossie_logo.svg`,
-          width: 500,
-          height: 500,
-          alt: "AOSSIE Logo",
+          url: `${siteUrl}/og-image.png`,
+          width: 1200,
+          height: 630,
+          alt: t("metaTitle"),
         },
       ],
       locale: locale === "en" ? "en_US" : "hi_IN",
@@ -46,7 +50,7 @@ export async function generateLocaleMetadata(
       card: "summary_large_image",
       title: t("metaTitle"),
       description: t("metaDescription"),
-      images: [`${siteUrl}/brand/icons/aossie_logo.svg`],
+      images: [`${siteUrl}/og-image.png`],
     },
   };
 }

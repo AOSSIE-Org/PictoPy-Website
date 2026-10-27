@@ -6,12 +6,15 @@ This document details the visual identity guidelines for **PictoPy Website** as 
 
 ## 🎨 PictoPy Website: Project Color Palette
 
-Define your project's custom color palette below:
+Colors used by the website theme ([`src/index.css`](../../src/index.css)) and the logo:
 
 | Color Name | Color Sample | HEX Code | RGB Code | Role |
 | :--- | :--- | :--- | :--- | :--- |
-| **TODO: Primary Color** | 🟦 | `#000000` | `rgb(0, 0, 0)` | Primary Project Color |
-| **TODO: Secondary Color** | 🟩 | `#000000` | `rgb(0, 0, 0)` | Secondary Project Color |
+| **Ink** | ⬛ | `#202020` | `rgb(32, 32, 32)` | Primary color in light mode: buttons and primary text (`--primary`) |
+| **White** | ⬜ | `#FFFFFF` | `rgb(255, 255, 255)` | Primary color in dark mode (`--primary`) |
+| **Sky Blue** | 🟦 | `#02BCF9` | `rgb(2, 188, 249)` | Logo accent |
+| **Amber** | 🟧 | `#FBA506` | `rgb(251, 165, 6)` | Logo accent |
+| **Green** | 🟩 | `#02F641` | `rgb(2, 246, 65)` | Logo accent |
 
 ---
 

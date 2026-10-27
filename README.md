@@ -13,7 +13,7 @@
 <!-- Organization Name -->
 <div align="center">
 
-[![Static Badge](https://img.shields.io/badge/AOSSIE-Webpage--Starter-228B22?style=for-the-badge&labelColor=FFC517)](https://aossie.org/)
+[![Static Badge](https://img.shields.io/badge/AOSSIE-PictoPy--Website-228B22?style=for-the-badge&labelColor=FFC517)](https://pictopy.aossie.org/)
 
 </div>
 
@@ -55,7 +55,9 @@
 
 A high-performance, developer-friendly webpage built on **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, and pre-configured for **Internationalization (i18n)** and **Localization (l10n)** using **next-intl**.
 
+[![CI](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/ci.yml)
 [![Deploy](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/build-and-deploy.yaml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/AOSSIE-Org/PictoPy-Website/badge)](https://scorecard.dev/viewer/?uri=github.com/AOSSIE-Org/PictoPy-Website)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 </div>
@@ -111,7 +113,7 @@ It runs entirely offline, keeping your photos and their analysis private — no 
   - Zero-bundle-size footprint for static translations using Server Components & Client `useTranslations`.
 - **Developer Experience:** Strict TypeScript compilation and ES Lint setup.
 - **Application Control Compatibility:** Configured with manual Webpack & Turbopack alias resolution to bypass restrictive execution environments blocking native binary compiles.
-- **Open-Source Governance & CI/CD:** Integrated GitHub Actions workflows (`ci.yml`, `nextjs.yml`, `label-merge-conflicts.yml`), `.coderabbit.yml`, and `DCO.md` legal documentation.
+- **Open-Source Governance & CI/CD:** Integrated GitHub Actions workflows (`ci.yml`, `nextjs.yml`, `label-merge-conflicts.yml`), `.coderabbit.yaml`, and `DCO.md` legal documentation.
 - **AI Agent Pairing Ready:** Includes `AGENTS.md` and `CLAUDE.md` to guide AI development agents.
 
 ---
@@ -123,13 +125,18 @@ Here is a breakdown of the key i18n directories and files:
 ```text
 ├── .github/                        # GitHub configuration and CI workflows
 │   └── workflows/
-├── .coderabbit.yml                 # Automated AI Code Review configuration
+├── .coderabbit.yaml                # Automated AI Code Review configuration
 ├── AGENTS.md                       # AI agent directives and rules
+├── BestPracticesChecklist.md       # OpenSSF best-practices self-assessment
 ├── CLAUDE.md                       # Notes for Claude or AI assistance
+├── CONTRIBUTING.md                 # How to contribute
 ├── COPYRIGHT.md
 ├── Contributors.md
 ├── DCO.md
+├── LICENSE                         # GNU GPL v3.0
+├── MAINTAINERS.md                  # Maintainers and mentors
 ├── README.md
+├── SECURITY.md                     # Private vulnerability reporting
 ├── Tasks.md
 ├── eslint.config.mjs
 ├── next.config.ts
@@ -139,6 +146,7 @@ Here is a breakdown of the key i18n directories and files:
 ├── postcss.config.mjs
 ├── public/                         # Public static assets
 │   ├── llms.txt
+│   ├── og-image.png                # 1200x630 social share image
 │   ├── robots.txt
 │   └── brand/
 │       ├── Brand.md
@@ -154,7 +162,7 @@ Here is a breakdown of the key i18n directories and files:
 │           └── favicon.ico
 ├── src/                            # Source files
 │   ├── app/
-│   │   ├── page.tsx                # Root redirect
+│   │   ├── (root)/                 # Bare `/`: full metadata + redirect to /en
 │   │   ├── sitemap.ts
 │   │   └── [locale]/
 │   │       ├── globals.css
@@ -188,17 +196,20 @@ Here is a breakdown of the key i18n directories and files:
 │   ├── const/
 │   ├── context/
 │   │   └── theme-provider.tsx      # Light/dark theme context
-│   ├── hooks/
+│   ├── hooks/                      # usePlatform, useDownloadLink
 │   ├── i18n/
 │   │   ├── metadata.ts
 │   │   ├── navigation.ts
 │   │   ├── request.ts
 │   │   └── routing.ts
 │   ├── index.css
+│   ├── lib/                        # Pure logic: platform detection, release lookup
 │   └── messages/
 │       ├── en.json
 │       └── hi.json
+├── tests/                          # Vitest unit + property tests
 ├── tsconfig.json
+├── vitest.config.mts
 └── .gitignore
 
 ```
@@ -373,7 +384,7 @@ Start the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it. The application will automatically detect your browser's language preferences and route you to `/hi` for Hindi or `/` for English (the default locale, which omits the prefix).
+Open [http://localhost:3000](http://localhost:3000) to view it. Every page lives under a locale prefix (`/en`, `/hi`); the bare `/` forwards to `/en`.
 
 ### Building for Production
 
@@ -385,12 +396,23 @@ npm run build
 
 This compiles optimized static pages under the `/[locale]` path and checks all TypeScript configurations.
 
-### Running in Production
-
-Start the optimized server(This is optional if you are deploying to a static hosting service like GitHub Pages):
+### Testing
 
 ```bash
-npm run start
+npm test                # run the Vitest suite once
+npm run test:watch      # re-run on file changes
+npm run test:coverage   # run with coverage; fails below 90% (same as CI)
+```
+
+Tests live in [`tests/`](tests/) and cover platform detection, release-asset lookup, SEO metadata, the sitemap, the download/platform hooks and translation-catalog parity. They include [fast-check](https://fast-check.dev) property tests.
+
+### Previewing the Static Export
+
+The site is exported to static HTML (`output: "export"`) and deployed to GitHub Pages by [`nextjs.yml`](.github/workflows/nextjs.yml). To preview the production output locally:
+
+```bash
+npm run build
+npx serve out
 ```
 
 ---
@@ -401,10 +423,12 @@ We welcome contributions of all kinds! To contribute:
 
 1. Fork the repository and create your feature branch (`git checkout -b feature/AmazingFeature`).
 2. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-3. Ensure code quality:
+3. Ensure code quality (CI runs the same checks):
    - `npm run lint`
+   - `npm run test:coverage`
    - `npm run build`
-4. Push your branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request for review.
+4. Sign off your commits (`git commit -s`), see [CONTRIBUTING.md](CONTRIBUTING.md).
+5. Push your branch (`git push origin feature/AmazingFeature`).
+6. Open a Pull Request and share it in the project's Discord channel.
 
-© 2026 AOSSIE. Released under the Apache 2.0 / Open Source License.
+© 2026 AOSSIE. Released under the [GNU GPL v3.0](LICENSE).

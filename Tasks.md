@@ -10,7 +10,7 @@ In the checklist below, mark the items that have been completed for your project
    - [x] Has proper open graph metadata, to ensure that it is shown well when shared in social media.
    - [x] Has a footer and header with AOSSIE logos and social handles.
    - [x] Uses Next.js Server Components by default with Client Components (`"use client"`) introduced only where interactive state is required.
-   - [x] Is deployed to GitHub Pages via a GitHub Workflow (`.github/workflows/CD.yml`).
+   - [x] Is deployed to GitHub Pages via a GitHub Workflow (`.github/workflows/nextjs.yml`).
    - [x] Has automated CI build and lint validation (`.github/workflows/ci.yml`).
-   - [x] Has CodeRabbit automated AI code review (`.coderabbit.yml`).
+   - [x] Has CodeRabbit automated AI code review (`.coderabbit.yaml`).
    - [x] Has open-source legal compliance (`DCO.md`, `COPYRIGHT.md`, `Contributors.md`).

@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /_vercel/
+Disallow: /pr-preview/
 
-
-# Replace the placeholder domain 'pictopy.aossie.org' below with your actual project production domain.
 Sitemap: https://pictopy.aossie.org/sitemap.xml

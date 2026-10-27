@@ -1,0 +1,162 @@
+# Enables IDE autocompletion for this config file
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# Language for CodeRabbit's review comments
+language: en
+
+# Enable experimental features (currently not using any specific early_access features)
+early_access: true
+
+chat:
+  # CodeRabbit will automatically respond to @coderabbitai mentions in PR comments
+  auto_reply: true
+
+reviews:
+  profile: assertive # Options: chill (focuses on significant issues, less nitpicky about style), assertive (more thorough, flags style issues and minor improvements too)
+
+  auto_review:
+    # Automatically trigger reviews when PRs are opened or updated
+    enabled: true
+    # Skip auto-review if PR title contains these keywords
+    ignore_title_keywords:
+      - "WIP"
+    # Don't auto-review draft PRs
+    drafts: false
+    # Only auto-review PRs targeting these branches
+    base_branches:
+      - main
+      - develop
+
+  # Include a high-level summary at the start of each review
+  high_level_summary: true
+
+  # Generate sequence diagrams for complex code flows
+  sequence_diagrams: true
+
+  # Include poems in reviews
+  poem: true
+
+  # Show review completion status
+  review_status: true
+
+  # Keep the walkthrough section expanded by default
+  collapse_walkthrough: false
+
+  # Include summary of all changed files
+  changed_files_summary: true
+
+  # Automatically request changes on the PR (just leave comments)
+  request_changes_workflow: true
+
+  # Pre-merge checks to enforce before merging PRs
+  pre_merge_checks:
+    description:
+      # Validate that PR has a proper description
+      mode: warning # Options: off, warning, error
+    docstrings:
+      # Disable docstring coverage checks (let's assume we don't need them)
+      mode: off
+
+  # Exclude generated output and dependencies from reviews
+  path_filters:
+    - "!**/node_modules/**"
+    - "!**/.next/**"
+    - "!**/out/**"
+    - "!**/coverage/**"
+    - "!next-env.d.ts"
+
+  # Tools relevant to a Next.js + TypeScript static site
+  tools:
+    shellcheck:
+      enabled: true
+    markdownlint:
+      enabled: true
+    github-checks:
+      enabled: true
+      timeout_ms: 90000
+    languagetool:
+      enabled: true
+      enabled_only: false
+      level: default
+    biome:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+    eslint:
+      enabled: true
+
+  labeling_instructions:
+    - label: Typescript Lang
+      instructions: Apply when the PR contains changes to TypeScript or JavaScript files
+    - label: UI/UX & Styles
+      instructions: Apply when the PR changes React components, CSS or Tailwind classes
+    - label: i18n
+      instructions: Apply when the PR changes `src/messages/*.json` or the next-intl setup in `src/i18n/`
+    - label: SEO
+      instructions: Apply when the PR changes metadata, `src/app/sitemap.ts`, `public/robots.txt`, `public/og-image.png` or `src/app/(root)/`
+    - label: Tests
+      instructions: Apply when the PR adds or modifies files in `tests/` or `vitest.config.mts`
+    - label: Documentation
+      instructions: Apply whenever markdown documentation is updated
+    - label: CI/CD
+      instructions: Apply when files in `.github/workflows/` are updated
+
+  # Review instructions that apply to all files
+  instructions: >-
+    - This is the landing page for PictoPy, AOSSIE's privacy-first desktop photo manager. It is a Next.js 16 static export deployed to GitHub Pages at https://pictopy.aossie.org.
+    - Verify that documentation and comments are free of spelling mistakes
+    - Verify that new logic is covered by tests and that the 90% coverage threshold in vitest.config.mts still holds
+    - Confirm that copyright years are up to date whenever a file is changed
+    - Point out redundant comments that do not add clarity to the code
+    - Look for code duplication
+    - Flag any TODO or FIXME left in code or docs (the project follows a zero-TODO policy)
+
+  path_instructions:
+    - path: "src/**/*.{ts,tsx}"
+      instructions: |
+        Next.js App Router (v16, output: "export"):
+        - Server Components by default; "use client" only for interactive components or browser APIs.
+        - Layout and page params are Promises: always `await params`.
+        - No server-only features (route handlers with dynamic data, cookies, headers, middleware); the site is a static export.
+        - Import Link, useRouter and usePathname from `@/i18n/navigation`, never from `next/link` or `next/navigation`.
+        - The bare `/` route lives in `src/app/(root)/` and must keep shipping full metadata plus a meta-refresh; do not replace it with `redirect()`.
+
+        Styling & accessibility:
+        - Use Tailwind v4 semantic tokens from `src/app/[locale]/globals.css`; no inline `dark:` utilities or hard-coded hex colors.
+        - Keep keyboard navigation, visible focus states and WCAG 2.2 AA contrast in both themes.
+        - Animate only transform and opacity, and respect `prefers-reduced-motion`.
+
+        Configuration:
+        - No magic constants: URLs, release links and tunable values belong in `src/const/const.ts` or `src/config/`.
+        - Keep hooks thin; pure logic goes in `src/lib/` so it can be unit and property tested.
+
+        Internationalization:
+        - Every user-visible string must exist in both `src/messages/en.json` and `src/messages/hi.json`.
+
+    - path: "src/messages/*.json"
+      instructions: |
+        - Keys and ICU placeholders must match exactly between `en.json` and `hi.json` (enforced by tests/messages.test.ts).
+        - Hindi copy should be natural, not word-for-word machine translation.
+
+    - path: "src/i18n/metadata.ts"
+      instructions: |
+        - Open Graph and Twitter images must be raster (PNG/JPG, 1200x630); social platforms do not render SVG previews.
+        - Keep canonical URLs and hreflang alternates for every locale.
+
+    - path: "tests/**/*.{ts,tsx}"
+      instructions: |
+        - Tests use Vitest, React Testing Library and fast-check.
+        - Ensure tests are non-trivial and non-tautological, assert behaviour rather than implementation, and use property tests for large input spaces.
+
+    - path: ".github/workflows/**"
+      instructions: |
+        - Actions should be pinned to a commit SHA or a full version tag.
+        - Workflows must request least-privilege `permissions`.
+        - Do not re-add `static_site_generator: next` to configure-pages; it overwrites next.config.ts.
+
+    - path: "public/**/*.{png,jpg,jpeg,webp,svg,ico}"
+      instructions: |
+        - Check image size and format (WebP/AVIF for photos, optimized SVG for logos).
+        - Brand assets must follow `public/brand/Brand.md`.

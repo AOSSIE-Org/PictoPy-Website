@@ -1,18 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FALLBACK_RELEASE, GITHUB_RELEASE_API } from "@/const/const";
+import type { Platform } from "@/lib/platform";
+import { findAsset, type GitHubRelease } from "@/lib/release";
 
-export type Platform = "mac" | "windows" | "linux";
-
-interface GitHubAsset {
-  name: string;
-  browser_download_url: string;
-}
-
-interface GitHubRelease {
-  tag_name: string;
-  assets: GitHubAsset[];
-}
+export type { Platform };
 
 let releaseCache: GitHubRelease | null = null;
 let releasePromise: Promise<GitHubRelease | null> | null = null;
@@ -34,20 +26,6 @@ async function getLatestRelease(): Promise<GitHubRelease | null> {
   }
 
   return releasePromise;
-}
-
-function findAsset(release: GitHubRelease, platform: Platform) {
-  const bySuffix = (...suffixes: string[]) =>
-    release.assets.find((a) => suffixes.some((s) => a.name.endsWith(s)));
-
-  switch (platform) {
-    case "mac":
-      return bySuffix(".dmg", ".app.tar.gz");
-    case "windows":
-      return bySuffix(".exe", ".msi");
-    case "linux":
-      return bySuffix(".deb", ".AppImage", ".rpm");
-  }
 }
 
 export function useDownloadLink(platform: Platform) {

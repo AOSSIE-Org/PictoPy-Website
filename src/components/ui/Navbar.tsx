@@ -16,6 +16,9 @@ import { useDownloadLink } from "@/hooks/useDownloadLink";
 import Image from "next/image";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { useTranslations } from "next-intl";
+import { useLenis } from "lenis/react";
+import { Link } from "@/i18n/navigation";
+import { scrollToSection, scrollToTop } from "@/lib/scroll";
 
 type NavItem = {
   key: "documentation" | "contribute" | "aboutUs" | "contact";
@@ -38,11 +41,41 @@ const navConfig: NavItem[] = [
   { key: "contact", targetId: "community" },
 ];
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+// Logo + name scroll back to the top; without JS the link still loads the homepage
+function LogoLink({
+  label,
+  onNavigate,
+}: {
+  label: string;
+  onNavigate?: () => void;
+}) {
+  const lenis = useLenis();
+
+  return (
+    <Link
+      href="/"
+      aria-label={label}
+      className="flex items-center gap-2 rounded-lg"
+      onClick={(e) => {
+        e.preventDefault();
+        onNavigate?.();
+        scrollToTop(lenis);
+      }}
+    >
+      <Image
+        src={PictoPyLogo.src}
+        alt=""
+        width={32}
+        height={32}
+        className="h-8 w-8 object-contain shrink-0 select-none"
+        loading="eager"
+        draggable={false}
+      />
+      <span className="text-primary text-[20px] font-semibold tracking-tight select-none">
+        PictoPy
+      </span>
+    </Link>
+  );
 }
 
 function NavItemLink({
@@ -56,6 +89,8 @@ function NavItemLink({
   className: string;
   onNavigate?: () => void;
 }) {
+  const lenis = useLenis();
+
   if (item.href) {
     return (
       <a
@@ -77,7 +112,7 @@ function NavItemLink({
       className={`${className} cursor-pointer`}
       onClick={() => {
         onNavigate?.();
-        scrollToSection(item.targetId!);
+        scrollToSection(item.targetId!, lenis);
       }}
     >
       {label}
@@ -110,18 +145,7 @@ const Navbar: React.FC = () => {
       <div className="h-19 w-full rounded-2xl border border-border flex items-center justify-between px-4  min-[1250px]:px-8 bg-[linear-gradient(#F8F9FA,#F8F9FA)] dark:bg-[linear-gradient(93.78deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] shadow-[inset_0_1px_1px_1px_#00000026] dark:shadow-[inset_0_1px_1px_1px_#FFFFFF26]">
         {/* Logo + Language switcher */}
         <div className="flex items-center gap-2">
-          <Image
-            src={PictoPyLogo.src}
-            alt="PictoPy logo"
-            width={32}
-            height={32}
-            className="h-8 w-8 object-contain shrink-0 select-none"
-            loading="eager"
-            draggable={false}
-          />
-          <span className="text-primary text-[20px] font-semibold tracking-tight select-none">
-            PictoPy
-          </span>
+          <LogoLink label={tN("backToTop")} />
 
           <div className="hidden min-[1000px]:flex items-center">
             <div className="mx-3 h-6 w-px border border-text3" />
@@ -176,6 +200,9 @@ const Navbar: React.FC = () => {
           className="min-[1000px]:hidden rounded-lg"
           onMouseEnter={() => setSidebarOpen(true)}
           onClick={() => setSidebarOpen(true)}
+          aria-label={tN("openMenu")}
+          aria-expanded={sidebarOpen}
+          aria-controls="mobile-menu"
         >
           <FiMenu size={24} />
         </Button>
@@ -222,10 +249,14 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
             : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setSidebarOpen(false)}
+        aria-label={tN("closeMenu")}
+        tabIndex={-1}
       />
 
-      {/* Drawer */}
+      {/* Drawer: inert while closed so its links can't be tabbed to off-screen */}
       <aside
+        id="mobile-menu"
+        inert={!sidebarOpen}
         className={`fixed top-0 right-0 bg-bg z-50 h-screen w-full max-w-full text-center sm:max-w-72 border border-border transition-transform duration-300 min-[1000px]:hidden ${
           sidebarOpen ? "translate-x-0 " : "translate-x-full "
         }`}
@@ -234,24 +265,15 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
         {/* Menu section */}
         <div className="flex items-center justify-between p-5">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <Image
-              src={PictoPyLogo.src}
-              alt="PictoPy logo"
-              width={32}
-              height={32}
-              className="h-8 w-8 object-contain shrink-0 select-none"
-              loading="eager"
-              draggable={false}
-            />
-            <span className="text-primary text-[20px] font-semibold tracking-tight select-none">
-              PictoPy
-            </span>
-          </div>
+          <LogoLink
+            label={tN("backToTop")}
+            onNavigate={() => setSidebarOpen(false)}
+          />
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSidebarOpen(false)}
+            aria-label={tN("closeMenu")}
           >
             <FiX size={22} />
           </Button>
