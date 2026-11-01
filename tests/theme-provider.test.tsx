@@ -66,6 +66,29 @@ describe("ThemeProvider", () => {
     expect(localStorage.getItem("theme")).toBe("light");
   });
 
+  it("switches colours with transitions off, then turns transitions back on", () => {
+    const blockers = () =>
+      Array.from(document.head.querySelectorAll("style")).filter((s) => s.textContent?.includes("transition:none"));
+    // Earlier renders in this file may still have theirs queued for removal
+    blockers().forEach((s) => s.remove());
+    vi.useFakeTimers();
+    try {
+      mockSystemDark(false);
+      renderProvider();
+      vi.runAllTimers();
+      expect(blockers()).toHaveLength(0);
+
+      fireEvent.click(screen.getByRole("button"));
+      // The class changes while every transition is disabled, so computed colours are final straight away
+      expect(isDarkDocument()).toBe(true);
+      expect(blockers()).toHaveLength(1);
+      vi.runAllTimers();
+      expect(blockers()).toHaveLength(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("property: after n toggles the theme is the start theme flipped n times, everywhere at once", () => {
     fc.assert(
       fc.property(fc.constantFrom("dark", "light"), fc.nat({ max: 9 }), (start, toggles) => {
