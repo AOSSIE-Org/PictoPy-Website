@@ -43,12 +43,17 @@ describe("SiteShareButton loading", () => {
     expect(share.openModal).toHaveBeenCalledTimes(1);
   });
 
-  it("does nothing when clicked before the dialog has loaded", () => {
+  it("stays disabled until the dialog has loaded, then opens it", async () => {
     (window as ShareWindow).SocialShareButton = GlobalShareButton;
     renderWithIntl(<SiteShareButton />);
-    fireEvent.click(screen.getByRole("button", { name: en.Share.trigger }));
-    expect(share.updateOptions).not.toHaveBeenCalled();
+    const trigger = screen.getByRole("button", { name: en.Share.trigger }) as HTMLButtonElement;
+    expect(trigger.disabled).toBe(true);
+    fireEvent.click(trigger);
     expect(share.openModal).not.toHaveBeenCalled();
+    await flushImport();
+    expect(trigger.disabled).toBe(false);
+    fireEvent.click(trigger);
+    expect(share.openModal).toHaveBeenCalledTimes(1);
   });
 
   it("never builds the dialog when unmounted before the library loads", async () => {
@@ -63,7 +68,8 @@ describe("SiteShareButton loading", () => {
     renderWithIntl(<SiteShareButton className="footer-link" />);
     await flushImport();
     const button = screen.getByRole("button", { name: en.Share.trigger });
-    expect(button.className).toBe("footer-link");
+    expect(button.classList.contains("footer-link")).toBe(true);
+    expect((button as HTMLButtonElement).disabled).toBe(true);
     expect(button.getAttribute("title")).toBe(en.Share.trigger);
     expect(() => fireEvent.click(button)).not.toThrow();
     expect(share.constructed).toBe(0);

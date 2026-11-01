@@ -42,16 +42,13 @@ const navConfig: NavItem[] = [
   { key: "contact", targetId: "community" },
 ];
 
-// Logo + name scroll back to the top of the homepage; elsewhere (and without JS) the link loads it
-function LogoLink({
-  label,
-  onNavigate,
-}: {
-  label: string;
-  onNavigate?: () => void;
-}) {
+// Logo + name scroll back to the top of the homepage; elsewhere (and without JS) the link loads it,
+// and its accessible name says which of the two it does
+function LogoLink({ onNavigate }: { onNavigate?: () => void }) {
+  const tN = useTranslations("Home.Navbar");
   const lenis = useLenis();
   const isHome = usePathname() === "/";
+  const label = isHome ? tN("backToTop") : tN("goHome");
 
   return (
     <Link
@@ -157,7 +154,7 @@ const Navbar: React.FC = () => {
       <div className="h-19 w-full rounded-2xl border border-border flex items-center justify-between px-4  min-[1250px]:px-8 bg-[linear-gradient(#F8F9FA,#F8F9FA)] dark:bg-[linear-gradient(93.78deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] shadow-[inset_0_1px_1px_1px_#00000026] dark:shadow-[inset_0_1px_1px_1px_#FFFFFF26]">
         {/* Logo + Language switcher */}
         <div className="flex items-center gap-2">
-          <LogoLink label={tN("backToTop")} />
+          <LogoLink />
 
           <div className="hidden min-[1000px]:flex items-center">
             <div className="mx-3 h-6 w-px border border-text3" />
@@ -277,10 +274,7 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
         {/* Menu section */}
         <div className="flex items-center justify-between p-5">
           {/* Logo */}
-          <LogoLink
-            label={tN("backToTop")}
-            onNavigate={() => setSidebarOpen(false)}
-          />
+          <LogoLink onNavigate={() => setSidebarOpen(false)} />
           <Button
             variant="ghost"
             size="icon"

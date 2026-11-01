@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Share2 } from "lucide-react";
 import type SocialShareButton from "@aossie-org/social-share-button";
@@ -26,6 +26,8 @@ export default function SiteShareButton({ className }: { className?: string }) {
   const { theme: siteTheme } = useContext(ThemeContext);
   const containerRef = useRef<HTMLSpanElement>(null);
   const instanceRef = useRef<SocialShareButton | null>(null);
+  // The button stays disabled until the dialog exists, so an early click is never silently dropped
+  const [ready, setReady] = useState(false);
 
   const theme = siteTheme === ThemeOptions.Dark ? "dark" : "light";
   const share = t("share");
@@ -50,12 +52,14 @@ export default function SiteShareButton({ className }: { className?: string }) {
         labels: { share, close, copy, copied, copyFailed, urlLabel },
       });
       instanceRef.current = instance;
+      setReady(true);
     });
 
     return () => {
       cancelled = true;
       instance?.destroy();
       instanceRef.current = null;
+      setReady(false);
     };
   }, [theme, share, close, copy, copied, copyFailed, urlLabel]);
 
@@ -69,7 +73,14 @@ export default function SiteShareButton({ className }: { className?: string }) {
   return (
     <>
       <span ref={containerRef} />
-      <button type="button" onClick={openDialog} aria-label={t("trigger")} title={t("trigger")} className={className}>
+      <button
+        type="button"
+        onClick={openDialog}
+        disabled={!ready}
+        aria-label={t("trigger")}
+        title={t("trigger")}
+        className={`${className ?? ""} disabled:cursor-wait disabled:opacity-50`}
+      >
         <Share2 size={ICON_SIZE} aria-hidden="true" />
       </button>
     </>

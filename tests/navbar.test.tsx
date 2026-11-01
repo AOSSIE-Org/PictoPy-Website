@@ -134,10 +134,12 @@ describe("Navbar links", () => {
     expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
   });
 
-  it("lets the logo load the homepage from other pages", () => {
+  it("lets the logo load the homepage from other pages, labelled as a home link", () => {
     const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
     renderWithIntl(<Navbar />, { path: "/terms" });
-    const [logo] = screen.getAllByRole("link", { name: en.Home.Navbar.backToTop });
+    expect(screen.queryByRole("link", { name: en.Home.Navbar.backToTop })).toBeNull();
+    const [logo] = screen.getAllByRole("link", { name: en.Home.Navbar.goHome });
+    expect(logo.getAttribute("href")).toBe("/en");
     expect(fireEvent.click(logo)).toBe(true);
     expect(scrollTo).not.toHaveBeenCalled();
   });
