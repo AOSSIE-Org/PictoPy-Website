@@ -49,11 +49,11 @@ Open [http://localhost:3000](http://localhost:3000). The site redirects to the d
 
    ```bash
    npm run lint
-   npm run test:coverage   # Vitest unit + property tests, 90% coverage threshold
+   npm run test:coverage   # Vitest unit, render + property tests, 90% coverage threshold
    npm run build           # static export to out/
    ```
 
-3. **Tests are required for new logic.** Anything in `src/lib/`, `src/hooks/`, `src/config/`, `src/i18n/` or `src/app/sitemap.ts` must come with tests in `tests/`. Use [fast-check](https://fast-check.dev) property tests where an input space is large (user agents, file names, URLs).
+3. **Tests are required for new functionality.** Coverage is measured on the whole code base (every file in `src/`) and CI fails below 90% lines, statements, functions or branches. Only type-only `*.d.ts` files are excluded; the list, with the reason for each entry, is in [`vitest.config.mts`](vitest.config.mts), and new exclusions need a reason there. New logic in `src/lib/`, `src/hooks/`, `src/config/` or `src/i18n/` comes with unit tests, and new or changed components and pages come with React Testing Library render tests that use the real message catalogs (both locales where the copy differs). Use [fast-check](https://fast-check.dev) property tests where an input space is large (user agents, file names, URLs, click sequences). Shared mocks for what jsdom cannot run live in [`tests/setup.ts`](tests/setup.ts).
 4. **Commit messages** follow [Conventional Commits](https://www.conventionalcommits.org) (`feat:`, `fix:`, `docs:`, `test:`, `chore:`), signed off with `-s`.
 5. **Screenshots:** include before/after screenshots (light and dark, desktop and mobile) for any visual change.
 
