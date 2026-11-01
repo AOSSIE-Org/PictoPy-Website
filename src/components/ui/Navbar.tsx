@@ -11,13 +11,14 @@ import { ThemeContext, ThemeOptions } from "@/context/theme-provider";
 import { FiArrowUpRight, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import PictoPyLogo from "@/assets/pictopy_logo.svg";
 import { platformConfig } from "@/const/const";
+import { REPO_CONTRIBUTING_URL, REPO_README_URL } from "@/config/links";
 import { usePlatform } from "@/hooks/usePlatform";
 import { useDownloadLink } from "@/hooks/useDownloadLink";
 import Image from "next/image";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { useLenis } from "lenis/react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { scrollToSection, scrollToTop } from "@/lib/scroll";
 
 type NavItem = {
@@ -26,22 +27,22 @@ type NavItem = {
   targetId?: string;
 };
 
-// No extra pages on the site: external docs open in a new tab,
-// the rest smooth-scroll to their homepage section.
+// External docs open in a new tab; the rest smooth-scroll to their homepage
+// section, or link to it from the other pages (the legal pages).
 const navConfig: NavItem[] = [
   {
     key: "documentation",
-    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/README.md",
+    href: REPO_README_URL,
   },
   {
     key: "contribute",
-    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/CONTRIBUTING.md",
+    href: REPO_CONTRIBUTING_URL,
   },
   { key: "aboutUs", targetId: "faq" },
   { key: "contact", targetId: "community" },
 ];
 
-// Logo + name scroll back to the top; without JS the link still loads the homepage
+// Logo + name scroll back to the top of the homepage; elsewhere (and without JS) the link loads it
 function LogoLink({
   label,
   onNavigate,
@@ -50,6 +51,7 @@ function LogoLink({
   onNavigate?: () => void;
 }) {
   const lenis = useLenis();
+  const isHome = usePathname() === "/";
 
   return (
     <Link
@@ -57,8 +59,9 @@ function LogoLink({
       aria-label={label}
       className="flex items-center gap-2 rounded-lg"
       onClick={(e) => {
-        e.preventDefault();
         onNavigate?.();
+        if (!isHome) return;
+        e.preventDefault();
         scrollToTop(lenis);
       }}
     >
@@ -90,6 +93,7 @@ function NavItemLink({
   onNavigate?: () => void;
 }) {
   const lenis = useLenis();
+  const isHome = usePathname() === "/";
 
   if (item.href) {
     return (
@@ -103,6 +107,14 @@ function NavItemLink({
         {label}
         <FiArrowUpRight size={13} aria-hidden="true" className="opacity-70" />
       </a>
+    );
+  }
+
+  if (!isHome) {
+    return (
+      <Link href={`/#${item.targetId}`} className={className} onClick={onNavigate}>
+        {label}
+      </Link>
     );
   }
 

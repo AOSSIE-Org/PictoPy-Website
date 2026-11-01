@@ -2,6 +2,7 @@ import Script from "next/script";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import HomePage from "@/components/HomePage";
 import { routing } from "@/i18n/routing";
+import { SITE_URL } from "@/config/site";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({
@@ -27,8 +28,8 @@ export default async function Home({
     publisher: {
       "@type": "Organization",
       name: "PictoPy",
-      url: "https://pictopy.aossie.org",
-      logo: "https://pictopy.aossie.org/brand/icons/pictopy_logo.svg",
+      url: SITE_URL,
+      logo: `${SITE_URL}/brand/icons/pictopy_logo.svg`,
     },
     inLanguage: locale,
   };

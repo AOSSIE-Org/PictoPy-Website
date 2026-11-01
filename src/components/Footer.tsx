@@ -1,3 +1,5 @@
+import Image from "next/image";
+import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import type { IconType } from "react-icons";
 import { FiArrowUpRight } from "react-icons/fi";
@@ -8,8 +10,44 @@ import {
   FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
+import {
+  AOSSIE_GITHUB_URL,
+  AOSSIE_PROJECTS_URL,
+  AOSSIE_URL,
+  DJED_URL,
+  REPO_CONTRIBUTING_URL,
+  REPO_ISSUES_URL,
+  REPO_LATEST_RELEASE_URL,
+  RESONATE_REPO_URL,
+  SOCIAL_LINKS,
+  STABILITY_NEXUS_URL,
+  WEBSITE_URL,
+} from "@/config/links";
+import { LEGAL_PAGES, type LegalPage } from "@/config/legal";
+import { SUPPORT_PAGE_PATH } from "@/config/support";
+import { Link } from "@/i18n/navigation";
 import Download from "./Download";
 import FooterWatermark from "./FooterWatermark";
+import SiteShareButton from "./SiteShareButton";
+
+/** Bottom-bar link style: the legal links' look plus a visible keyboard focus ring. */
+const BOTTOM_BAR_LINK_CLASSES =
+  "rounded-sm transition-colors duration-200 hover:text-text focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
+
+/** The word "AOSSIE" in the made-with credit, with the AOSSIE logo right before it (decorative, as the word follows) and never wrapping apart. */
+const aossieLogo = (name: ReactNode) => (
+  <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+    <Image
+      src="/brand/icons/aossie_logo.svg"
+      alt=""
+      aria-hidden="true"
+      width={22}
+      height={24}
+      className="h-5 w-auto"
+    />
+    {name}
+  </span>
+);
 
 type FooterColumn = {
   heading: "product" | "parentOrg" | "contribute" | "projects" | "umbrellaOrgs";
@@ -20,71 +58,46 @@ const footerColumns: FooterColumn[] = [
   {
     heading: "product",
     links: [
-      {
-        label: "software",
-        href: "https://github.com/AOSSIE-Org/PictoPy/releases/latest",
-      },
-      { label: "website", href: "https://pictopy.aossie.org" },
+      { label: "software", href: REPO_LATEST_RELEASE_URL },
+      { label: "website", href: WEBSITE_URL },
     ],
   },
   {
     heading: "parentOrg",
     links: [
-      { label: "aossie", href: "https://aossie.org" },
-      { label: "github", href: "https://github.com/AOSSIE-Org" },
+      { label: "aossie", href: AOSSIE_URL },
+      { label: "github", href: AOSSIE_GITHUB_URL },
     ],
   },
   {
     heading: "contribute",
     links: [
-      {
-        label: "contributingGuide",
-        href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/CONTRIBUTING.md",
-      },
-      {
-        label: "goodFirstIssues",
-        href: "https://github.com/AOSSIE-Org/PictoPy/issues",
-      },
+      { label: "contributingGuide", href: REPO_CONTRIBUTING_URL },
+      { label: "goodFirstIssues", href: REPO_ISSUES_URL },
     ],
   },
   {
     heading: "projects",
     links: [
-      { label: "resonate", href: "https://github.com/AOSSIE-Org/Resonate" },
-      { label: "checkOutProjects", href: "https://aossie.org/en/projects" },
+      { label: "resonate", href: RESONATE_REPO_URL },
+      { label: "checkOutProjects", href: AOSSIE_PROJECTS_URL },
     ],
   },
   {
     heading: "umbrellaOrgs",
     links: [
-      { label: "djedAlliance", href: "https://djed.one/" },
-      { label: "stabilityNexus", href: "https://stability.nexus/" },
+      { label: "djedAlliance", href: DJED_URL },
+      { label: "stabilityNexus", href: STABILITY_NEXUS_URL },
     ],
   },
 ];
 
 const socials: { label: string; href: string; icon: IconType }[] = [
-  {
-    label: "Discord",
-    href: "https://discord.com/channels/1022871757289422898/1311271974630330388",
-    icon: FaDiscord,
-  },
-  {
-    label: "GitHub",
-    href: "https://github.com/AOSSIE-Org/PictoPy",
-    icon: FaGithub,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@AOSSIE-Org",
-    icon: FaYoutube,
-  },
-  { label: "X", href: "https://x.com/aossie_org", icon: FaXTwitter },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/aossie/",
-    icon: FaLinkedinIn,
-  },
+  { label: "Discord", href: SOCIAL_LINKS.discord, icon: FaDiscord },
+  { label: "GitHub", href: SOCIAL_LINKS.github, icon: FaGithub },
+  { label: "YouTube", href: SOCIAL_LINKS.youtube, icon: FaYoutube },
+  { label: "X", href: SOCIAL_LINKS.x, icon: FaXTwitter },
+  { label: "LinkedIn", href: SOCIAL_LINKS.linkedin, icon: FaLinkedinIn },
 ];
 
 async function Footer() {
@@ -152,16 +165,38 @@ async function Footer() {
         ))}
       </div>
 
-      {/* Bottom bar */}
-      <div className="flex flex-col items-center justify-between gap-3 py-8 text-[14px] font-medium text-[#515151] dark:text-text3 sm:flex-row">
-        <span>{t("copyright", { year: new Date().getFullYear() })}</span>
+      {/* Bottom bar: from xl it is a three-cell grid whose equal side cells keep the links centred on the viewport */}
+      <div className="flex flex-col items-center gap-3 py-8 text-center text-[14px] font-medium text-[#515151] dark:text-text3 xl:grid xl:grid-cols-[1fr_auto_1fr] xl:gap-x-8">
+        <span className="xl:justify-self-start">{t("copyright", { year: new Date().getFullYear() })}</span>
 
-        <span className="flex items-center gap-1.5">
-          {t("madeWithPrefix")}
+        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          {(Object.keys(LEGAL_PAGES) as LegalPage[]).map((page) => (
+            <li key={page}>
+              <Link
+                href={LEGAL_PAGES[page].path}
+                className="transition-colors duration-200 hover:text-text"
+              >
+                {t(`legal.${page}`)}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <Link href={SUPPORT_PAGE_PATH} className={BOTTOM_BAR_LINK_CLASSES}>
+              <span aria-hidden="true">♥ </span>
+              {t("supportLink")}
+            </Link>
+          </li>
+          <li className="flex items-center">
+            <SiteShareButton className={`inline-flex cursor-pointer items-center ${BOTTOM_BAR_LINK_CLASSES}`} />
+          </li>
+        </ul>
+
+        <span className="flex flex-wrap items-center justify-center gap-1.5 xl:justify-self-end">
+          {t.rich("madeWithPrefix", { logo: aossieLogo })}
           <span aria-hidden="true" className="text-[#B8B8B8] dark:text-[#E5E5E5]">
             ♥
           </span>
-          {t("madeWithSuffix")}
+          {t.rich("madeWithSuffix", { logo: aossieLogo })}
         </span>
       </div>
     </footer>

@@ -2,6 +2,7 @@
 import { FaDiscord, FaGithub, FaYoutube } from "react-icons/fa";
 import { ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { SOCIAL_LINKS } from "@/config/links";
 
 // Data to display in SocialMediaCTA section
 const cards = [
@@ -12,7 +13,7 @@ const cards = [
     label: "discord.memberLabel",
     description: "discord.description",
     action: "discord.button",
-    link: "https://discord.com/channels/1022871757289422898/1311271974630330388",
+    link: SOCIAL_LINKS.discord,
   },
   {
     icon: <FaGithub className="dark:text-white" />,
@@ -21,7 +22,7 @@ const cards = [
     label: "github.followerLabel",
     description: "github.description",
     action: "github.button",
-    link: "https://github.com/AOSSIE-Org/PictoPy",
+    link: SOCIAL_LINKS.github,
   },
   {
     icon: <FaYoutube className="text-[#FF0000]" />,
@@ -30,7 +31,7 @@ const cards = [
     label: "youtube.subscriberLabel",
     description: "youtube.description",
     action: "youtube.button",
-    link: "https://www.youtube.com/@AOSSIE-Org",
+    link: SOCIAL_LINKS.youtube,
   },
 ];
 

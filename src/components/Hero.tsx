@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { FiArrowUpRight } from "react-icons/fi";
 import { useLenis } from "lenis/react";
 import { scrollToSection } from "@/lib/scroll";
+import { AOSSIE_EN_URL } from "@/config/links";
 
 export default function Hero() {
   const t = useTranslations("Home.Hero");
@@ -32,7 +33,7 @@ export default function Hero() {
         {/* Powered by AOSSIE */}
         <div className="mt-3 pt-2">
           <a
-            href="https://aossie.org/en"
+            href={AOSSIE_EN_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-1 text-[13px] xs:text-sm font-medium tracking-[0.2px] text-[#606060] dark:text-text3 transition-colors duration-200 hover:text-black dark:hover:text-white"

@@ -1,5 +1,6 @@
 import { DiWindows } from "react-icons/di";
 import { SiLinux, SiApple } from "react-icons/si";
+import { REPO_URL } from "@/config/links";
 
 export const GITHUB_RELEASE_API =
   "https://api.github.com/repos/AOSSIE-Org/PictoPy/releases/latest";
@@ -10,11 +11,9 @@ export const FALLBACK_RELEASE = {
   version: "v1.2.0",
   publishedAt: "2026-07-16T15:27:59Z",
   downloads: {
-    windows:
-      "https://github.com/AOSSIE-Org/PictoPy/releases/download/v1.2.0/PictoPy_1.2.0_x64-setup.exe",
-    mac: "https://github.com/AOSSIE-Org/PictoPy/releases/download/v1.2.0/PictoPy_aarch64.app.tar.gz",
-    linux:
-      "https://github.com/AOSSIE-Org/PictoPy/releases/download/v1.2.0/PictoPy_1.2.0_amd64.deb",
+    windows: `${REPO_URL}/releases/download/v1.2.0/PictoPy_1.2.0_x64-setup.exe`,
+    mac: `${REPO_URL}/releases/download/v1.2.0/PictoPy_aarch64.app.tar.gz`,
+    linux: `${REPO_URL}/releases/download/v1.2.0/PictoPy_1.2.0_amd64.deb`,
   },
 } as const;
 
