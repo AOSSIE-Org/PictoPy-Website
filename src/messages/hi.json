@@ -11,6 +11,7 @@
       "contact": "संपर्क करें",
       "download": "डाउनलोड करें",
       "backToTop": "PictoPy, ऊपर जाएँ",
+      "goHome": "PictoPy होम पेज",
       "openMenu": "मेनू खोलें",
       "closeMenu": "मेनू बंद करें"
     },
@@ -171,8 +172,15 @@
       },
 
       "copyright": "© {year} PictoPy",
-      "madeWithPrefix": "AOSSIE समुदाय द्वारा",
-      "madeWithSuffix": "के साथ निर्मित"
+      "madeWithPrefix": "<logo>AOSSIE</logo> द्वारा",
+      "madeWithSuffix": "के साथ निर्मित",
+
+      "supportLink": "समर्थन करें",
+
+      "legal": {
+        "privacy": "गोपनीयता नीति",
+        "terms": "सेवा की शर्तें"
+      }
     }
   },
 
@@ -193,5 +201,34 @@
     "toggleTheme": "थीम बदलें",
     "toggleLight": "लाइट मोड चालू करें",
     "toggleDark": "डार्क मोड चालू करें"
+  },
+  "Legal": {
+    "englishOnly": "यह दस्तावेज़ केवल अंग्रेज़ी में उपलब्ध है।",
+    "privacy": {
+      "metaTitle": "गोपनीयता नीति",
+      "metaDescription": "PictoPy वेबसाइट आपकी जानकारी को कैसे संभालती है।"
+    },
+    "terms": {
+      "metaTitle": "सेवा की शर्तें",
+      "metaDescription": "PictoPy वेबसाइट के उपयोग की शर्तें।"
+    }
+  },
+
+  "Share": {
+    "trigger": "यह पेज शेयर करें",
+    "share": "शेयर करें",
+    "close": "बंद करें",
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया!",
+    "copyFailed": "विफल",
+    "urlLabel": "शेयर करने का URL"
+  },
+
+  "Support": {
+    "metaTitle": "PictoPy का समर्थन करें",
+    "metaDescription": "PictoPy को निःशुल्क और ओपन सोर्स बनाए रखने में मदद करें।",
+    "madeBy": "द्वारा बनाया गया प्रोजेक्ट",
+    "supportedBy": "समर्थक",
+    "aossieDescription": "AOSSIE एक ऑस्ट्रेलियाई गैर-लाभकारी संगठन है जो ओपन-सोर्स प्रोजेक्ट्स का समर्थन करता है और उन्हें एक साथ लाता है।"
   }
 }

@@ -3,15 +3,18 @@
 import { useSyncExternalStore } from "react";
 import { useLocale } from "next-intl";
 
+/** How often (ms) the menu-bar clock re-renders; minutes are its finest unit. */
+const CLOCK_TICK_MS = 30_000;
+
 // Re-render every half minute so the menu-bar clock stays current.
 function subscribe(callback: () => void) {
-  const id = setInterval(callback, 30_000);
+  const id = setInterval(callback, CLOCK_TICK_MS);
   return () => clearInterval(id);
 }
 
 function getSnapshot() {
   // Changes once per 30s bucket, keeping the snapshot stable between ticks.
-  return Math.floor(Date.now() / 30_000);
+  return Math.floor(Date.now() / CLOCK_TICK_MS);
 }
 
 function getServerSnapshot() {

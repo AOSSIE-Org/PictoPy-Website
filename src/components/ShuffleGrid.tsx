@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { squareData } from "@/const/const";
 
+/** Delay (ms) between reshuffles of the background photo grid. */
+const SHUFFLE_INTERVAL_MS = 3000;
+
 const shuffle = (array: (typeof squareData)[0][]) => {
   let currentIndex = array.length,
     randomIndex;
@@ -27,7 +30,7 @@ const ShuffleGrid = () => {
   useEffect(() => {
     const shuffleSquares = () => {
       setSquares(shuffle([...squareData])); // copy first
-      timeoutRef.current = setTimeout(shuffleSquares, 3000);
+      timeoutRef.current = setTimeout(shuffleSquares, SHUFFLE_INTERVAL_MS);
     };
 
     shuffleSquares();

@@ -16,6 +16,24 @@ export const ThemeContext = React.createContext<ThemeContextStructure>({
   toggleTheme: () => {},
 });
 
+/** Delay (ms) before transitions are switched back on after a theme change; one task is enough. */
+const TRANSITION_RESTORE_DELAY_MS = 1;
+
+/**
+ * Sets or clears the `dark` class with CSS transitions switched off, so colours change instantly. Components that
+ * read the page's computed colours right after a theme change (the Support Us widget in "auto" theme) then see the
+ * new theme instead of a value from the middle of the 200ms colour fade.
+ */
+function applyThemeClass(dark: boolean) {
+  const noTransitions = document.createElement("style");
+  noTransitions.textContent = "*,*::before,*::after{transition:none!important}";
+  document.head.appendChild(noTransitions);
+  document.documentElement.classList.toggle("dark", dark);
+  // Apply the new colours while transitions are off, then restore them
+  window.getComputedStyle(document.body).getPropertyValue("background-color");
+  setTimeout(() => noTransitions.remove(), TRANSITION_RESTORE_DELAY_MS);
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeOptions>(ThemeOptions.Light);
 
@@ -42,15 +60,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
-
-    if (theme === ThemeOptions.Dark) {
-      root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
+    const dark = theme === ThemeOptions.Dark;
+    applyThemeClass(dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
   }, [theme]);
 
   const toggleTheme = () => {

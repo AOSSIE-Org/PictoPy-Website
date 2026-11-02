@@ -140,7 +140,7 @@
   - *Evidence URL:* `npm test` / `npm run test:coverage` (https://github.com/AOSSIE-Org/PictoPy-Website/blob/main/package.json)
 
 - [x] 🔵 **test_most** — The test suite covers most code branches and functionality. *(SUGGESTED)*
-  - *Evidence URL:* https://github.com/AOSSIE-Org/PictoPy-Website/blob/main/vitest.config.mts (90% line/branch/function thresholds on logic modules, enforced in CI)
+  - *Evidence URL:* https://github.com/AOSSIE-Org/PictoPy-Website/blob/main/vitest.config.mts (coverage measured on the whole code base, every file in `src/` except type-only `*.d.ts`; 90% line/statement/function/branch thresholds enforced in CI; currently 100% lines, ~98% branches across unit, render and property tests)
 
 ### New Functionality Testing Policy
 

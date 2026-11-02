@@ -1,16 +1,17 @@
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import { getSiteUrl } from "@/config/site";
 
+/** `path` is the page's path below the locale prefix, e.g. "/privacy"; the home page has none. */
 export async function generateLocaleMetadata(
   locale: string,
   namespace: string,
+  path = "",
 ): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace });
 
-  const rawSiteUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://pictopy.aossie.org";
-  const siteUrl = rawSiteUrl.replace(/\/$/, "");
-  const localeUrl = `${siteUrl}/${locale}`;
+  const siteUrl = getSiteUrl();
+  const localeUrl = `${siteUrl}/${locale}${path}`;
 
   return {
     title: t("metaTitle"),
@@ -18,8 +19,8 @@ export async function generateLocaleMetadata(
     alternates: {
       canonical: localeUrl,
       languages: {
-        en: `${siteUrl}/en`,
-        hi: `${siteUrl}/hi`,
+        en: `${siteUrl}/en${path}`,
+        hi: `${siteUrl}/hi${path}`,
       },
     },
     icons: {

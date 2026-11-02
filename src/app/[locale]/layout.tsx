@@ -7,7 +7,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { LenisProvider } from "@/components/providers/lenis-provider";
 import "./globals.css";
-import ShuffleGrid from "@/components/ShuffleGrid";
+import PageBackground from "@/components/PageBackground";
 import Navbar from "@/components/ui/Navbar";
 import { ThemeProvider } from "@/context/theme-provider";
 
@@ -63,7 +63,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <LenisProvider>
               <main className="relative min-h-screen bg-bg text-text">
-                <ShuffleGrid />
+                <PageBackground />
                 <div className="relative z-10 bg-transparent text-text py-4 px-4 min-[1250px]:px-29.5">
                   <Navbar />
                   {children}{" "}

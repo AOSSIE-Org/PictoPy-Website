@@ -11,13 +11,14 @@ import { ThemeContext, ThemeOptions } from "@/context/theme-provider";
 import { FiArrowUpRight, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 import PictoPyLogo from "@/assets/pictopy_logo.svg";
 import { platformConfig } from "@/const/const";
+import { REPO_CONTRIBUTING_URL, REPO_README_URL } from "@/config/links";
 import { usePlatform } from "@/hooks/usePlatform";
 import { useDownloadLink } from "@/hooks/useDownloadLink";
 import Image from "next/image";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { useTranslations } from "next-intl";
 import { useLenis } from "lenis/react";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { scrollToSection, scrollToTop } from "@/lib/scroll";
 
 type NavItem = {
@@ -26,30 +27,28 @@ type NavItem = {
   targetId?: string;
 };
 
-// No extra pages on the site: external docs open in a new tab,
-// the rest smooth-scroll to their homepage section.
+// External docs open in a new tab; the rest smooth-scroll to their homepage
+// section, or link to it from the other pages (the legal pages).
 const navConfig: NavItem[] = [
   {
     key: "documentation",
-    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/README.md",
+    href: REPO_README_URL,
   },
   {
     key: "contribute",
-    href: "https://github.com/AOSSIE-Org/PictoPy/blob/main/CONTRIBUTING.md",
+    href: REPO_CONTRIBUTING_URL,
   },
   { key: "aboutUs", targetId: "faq" },
   { key: "contact", targetId: "community" },
 ];
 
-// Logo + name scroll back to the top; without JS the link still loads the homepage
-function LogoLink({
-  label,
-  onNavigate,
-}: {
-  label: string;
-  onNavigate?: () => void;
-}) {
+// Logo + name scroll back to the top of the homepage; elsewhere (and without JS) the link loads it,
+// and its accessible name says which of the two it does
+function LogoLink({ onNavigate }: { onNavigate?: () => void }) {
+  const tN = useTranslations("Home.Navbar");
   const lenis = useLenis();
+  const isHome = usePathname() === "/";
+  const label = isHome ? tN("backToTop") : tN("goHome");
 
   return (
     <Link
@@ -57,8 +56,9 @@ function LogoLink({
       aria-label={label}
       className="flex items-center gap-2 rounded-lg"
       onClick={(e) => {
-        e.preventDefault();
         onNavigate?.();
+        if (!isHome) return;
+        e.preventDefault();
         scrollToTop(lenis);
       }}
     >
@@ -90,6 +90,7 @@ function NavItemLink({
   onNavigate?: () => void;
 }) {
   const lenis = useLenis();
+  const isHome = usePathname() === "/";
 
   if (item.href) {
     return (
@@ -103,6 +104,14 @@ function NavItemLink({
         {label}
         <FiArrowUpRight size={13} aria-hidden="true" className="opacity-70" />
       </a>
+    );
+  }
+
+  if (!isHome) {
+    return (
+      <Link href={`/#${item.targetId}`} className={className} onClick={onNavigate}>
+        {label}
+      </Link>
     );
   }
 
@@ -145,7 +154,7 @@ const Navbar: React.FC = () => {
       <div className="h-19 w-full rounded-2xl border border-border flex items-center justify-between px-4  min-[1250px]:px-8 bg-[linear-gradient(#F8F9FA,#F8F9FA)] dark:bg-[linear-gradient(93.78deg,rgba(17,18,20,0.75)_4.87%,rgba(12,13,15,0.9)_75.88%)] shadow-[inset_0_1px_1px_1px_#00000026] dark:shadow-[inset_0_1px_1px_1px_#FFFFFF26]">
         {/* Logo + Language switcher */}
         <div className="flex items-center gap-2">
-          <LogoLink label={tN("backToTop")} />
+          <LogoLink />
 
           <div className="hidden min-[1000px]:flex items-center">
             <div className="mx-3 h-6 w-px border border-text3" />
@@ -265,10 +274,7 @@ function MobileSidebar({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) {
         {/* Menu section */}
         <div className="flex items-center justify-between p-5">
           {/* Logo */}
-          <LogoLink
-            label={tN("backToTop")}
-            onNavigate={() => setSidebarOpen(false)}
-          />
+          <LogoLink onNavigate={() => setSidebarOpen(false)} />
           <Button
             variant="ghost"
             size="icon"

@@ -18,7 +18,7 @@ Find out more at https://pictopy.aossie.org/.
 - **Build:** `npm run build` (static export to `out/`)
 - **Develop:** `npm run dev`
 - **Lint:** `npm run lint`
-- **Test:** `npm test` · `npm run test:coverage` (90% threshold, enforced in CI)
+- **Test:** `npm test` · `npm run test:coverage` (90% threshold on the whole code base, every file in `src/`, enforced in CI; exclusions and their reasons are listed in [`vitest.config.mts`](vitest.config.mts)). Components and pages get React Testing Library render tests with the real catalogs; shared jsdom mocks are in [`tests/setup.ts`](tests/setup.ts).
 - **Testable logic lives in [`src/lib/`](src/lib/):** keep hooks thin and put pure functions there, with unit and fast-check property tests in [`tests/`](tests/).
 
 ---
@@ -44,6 +44,7 @@ Find out more at https://pictopy.aossie.org/.
 ## 📦 Project Boundaries
 
 - **Config alias map:** Webpack & Turbopack alias resolvers are manually defined in [`next.config.ts`](next.config.ts) mapping `"next-intl/config"` to our local request setup. Do not import the native `@swc/core` compiler plugin wrapper `createNextIntlPlugin` directly to avoid security policy native module blocks.
+- **External links:** External links live in [`src/config/links.ts`](src/config/links.ts) (site origin in [`src/config/site.ts`](src/config/site.ts)); never hard-code URLs in components. Timer and tuning numbers used in one file are named constants at the top of that file.
 - **Branding Assets:** The official branding logo, favicon, and style specifications reside inside [`public/brand/`](public/brand/). The social share image is [`public/og-image.png`](public/og-image.png) (1200x630 PNG; never point Open Graph at an SVG).
-- **Root route:** [`src/app/(root)/`](src/app/(root)/) serves the bare `/` with the default locale's metadata and a `<meta http-equiv="refresh">` to `/en`. Do not replace it with `redirect()`, which exports an empty error page.
+- **Root route:** [`src/app/(root)/`](src/app/(root)/) serves the bare `/` with the default locale's metadata and an inline `location.replace("/en")` that runs as soon as it is parsed (the `<meta http-equiv="refresh">` and link are only a no-JS fallback; keep the `(root)` layout free of stylesheets so nothing delays it). Do not replace it with `redirect()`, which exports an empty error page.
 

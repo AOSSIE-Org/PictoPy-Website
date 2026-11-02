@@ -3,6 +3,8 @@ import sitemap from "@/app/sitemap";
 import { routing } from "@/i18n/routing";
 import { defaultLanguage, languages } from "@/config/languages";
 import { generateLocaleMetadata } from "@/i18n/metadata";
+import { LEGAL_PAGES } from "@/config/legal";
+import { SUPPORT_PAGE_PATH } from "@/config/support";
 
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async ({ locale }: { locale: string }) => (key: string) => `${locale}:${key}`),
@@ -21,8 +23,10 @@ describe("Locale configuration", () => {
 });
 
 describe("sitemap", () => {
-  it("lists one production URL per locale", () => {
-    expect(sitemap().map((entry) => entry.url)).toEqual(routing.locales.map((l) => `${SITE}/${l}`));
+  it("lists the home page, the legal pages and the support page for every locale", () => {
+    expect(sitemap().map((entry) => entry.url)).toEqual(
+      routing.locales.flatMap((l) => [`${SITE}/${l}`, `${SITE}/${l}/privacy`, `${SITE}/${l}/terms`, `${SITE}/${l}/support`]),
+    );
   });
 
   it("honours NEXT_PUBLIC_SITE_URL and strips a trailing slash", () => {
@@ -38,6 +42,24 @@ describe("generateLocaleMetadata", () => {
     expect(meta.description).toBe("hi:metaDescription");
     expect(meta.alternates?.canonical).toBe(`${SITE}/hi`);
     expect(meta.alternates?.languages).toEqual({ en: `${SITE}/en`, hi: `${SITE}/hi` });
+  });
+
+  it("points canonical and hreflang alternates at a page below the locale", async () => {
+    const meta = await generateLocaleMetadata("hi", "Legal.privacy", LEGAL_PAGES.privacy.path);
+    expect(meta.title).toBe("hi:metaTitle");
+    expect(meta.alternates?.canonical).toBe(`${SITE}/hi/privacy`);
+    expect(meta.alternates?.languages).toEqual({ en: `${SITE}/en/privacy`, hi: `${SITE}/hi/privacy` });
+    expect(meta.openGraph).toMatchObject({ url: `${SITE}/hi/privacy` });
+    expect(sitemap().map((entry) => entry.url)).toContain(meta.alternates?.canonical);
+  });
+
+  it("gives the support page its own canonical and hreflang alternates", async () => {
+    const meta = await generateLocaleMetadata("hi", "Support", SUPPORT_PAGE_PATH);
+    expect(meta.title).toBe("hi:metaTitle");
+    expect(meta.alternates?.canonical).toBe(`${SITE}/hi/support`);
+    expect(meta.alternates?.languages).toEqual({ en: `${SITE}/en/support`, hi: `${SITE}/hi/support` });
+    expect(meta.openGraph).toMatchObject({ url: `${SITE}/hi/support` });
+    expect(sitemap().map((entry) => entry.url)).toContain(meta.alternates?.canonical);
   });
 
   it("uses a 1200x630 raster share image, because social platforms ignore SVG previews", async () => {

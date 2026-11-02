@@ -56,7 +56,7 @@
 A high-performance, developer-friendly webpage built on **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, and pre-configured for **Internationalization (i18n)** and **Localization (l10n)** using **next-intl**.
 
 [![CI](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/ci.yml)
-[![Deploy](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/build-and-deploy.yaml)
+[![Deploy](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/nextjs.yml/badge.svg)](https://github.com/AOSSIE-Org/PictoPy-Website/actions/workflows/nextjs.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/AOSSIE-Org/PictoPy-Website/badge)](https://scorecard.dev/viewer/?uri=github.com/AOSSIE-Org/PictoPy-Website)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
@@ -207,7 +207,7 @@ Here is a breakdown of the key i18n directories and files:
 │   └── messages/
 │       ├── en.json
 │       └── hi.json
-├── tests/                          # Vitest unit + property tests
+├── tests/                          # Vitest unit, render + property tests
 ├── tsconfig.json
 ├── vitest.config.mts
 └── .gitignore
@@ -404,7 +404,13 @@ npm run test:watch      # re-run on file changes
 npm run test:coverage   # run with coverage; fails below 90% (same as CI)
 ```
 
-Tests live in [`tests/`](tests/) and cover platform detection, release-asset lookup, SEO metadata, the sitemap, the download/platform hooks and translation-catalog parity. They include [fast-check](https://fast-check.dev) property tests.
+Tests live in [`tests/`](tests/). Coverage is measured on the **whole code base** (every file in `src/`: pages, layouts, components, hooks, config and helpers), and CI fails if lines, statements, functions or branches drop below 90%. The only exclusion is type-only declaration files (`*.d.ts`); the list, with a reason for each entry, is in [`vitest.config.mts`](vitest.config.mts).
+
+- **Unit and logic tests** cover platform detection, release-asset lookup, SEO metadata, the sitemap, the download/platform hooks and translation-catalog parity.
+- **Render tests** ([React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) in jsdom) render every component, page and layout with the real `en` and `hi` catalogs and check copy, links, ARIA state and interactions (navbar and mobile menu, theme toggle, language switcher, FAQ accordion, download buttons, share dialog). Server Components are rendered with React's server renderer, as the static export does.
+- **Property tests** ([fast-check](https://fast-check.dev)) check invariants over generated inputs: user agents, release assets, sitemap and locale URLs, safe links in the legal documents, the FAQ accordion, language-switcher keyboard focus, theme toggling and the photo-grid shuffle.
+
+Shared stand-ins for what jsdom cannot run (the Next.js router, `next/image`, `next/font`, `matchMedia`, observers) are in [`tests/setup.ts`](tests/setup.ts) and [`tests/helpers/`](tests/helpers/).
 
 ### Previewing the Static Export
 
