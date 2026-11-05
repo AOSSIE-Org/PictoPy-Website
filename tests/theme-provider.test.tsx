@@ -58,18 +58,25 @@ describe("ThemeProvider", () => {
     // As after the head script ran for a saved dark theme
     localStorage.setItem("theme", "dark");
     document.documentElement.classList.add("dark");
-    const classStates: boolean[] = [];
-    const observer = new MutationObserver(() => classStates.push(isDarkDocument()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    const records: MutationRecord[] = [];
+    const observer = new MutationObserver((list) => records.push(...list));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+    const toggle = vi.spyOn(DOMTokenList.prototype, "toggle");
     const saved = vi.spyOn(Storage.prototype, "setItem");
     try {
       renderProvider();
-      observer.takeRecords().forEach(() => classStates.push(isDarkDocument()));
+      records.push(...observer.takeRecords());
       expect(screen.getByRole("button").textContent).toBe("dark");
-      expect(classStates.every(Boolean)).toBe(true);
+      // The provider applied the theme (so the checks below are not vacuous) and never turned dark off on the way
+      expect(toggle).toHaveBeenCalledWith("dark", true);
+      expect(toggle).not.toHaveBeenCalledWith("dark", false);
+      // Every class value the document went through, before each change and at the end, kept dark
+      const states = [...records.map((r) => r.oldValue ?? ""), document.documentElement.className];
+      expect(states.every((value) => value.split(/\s+/).includes("dark"))).toBe(true);
       expect(saved).not.toHaveBeenCalledWith("theme", "light");
     } finally {
       observer.disconnect();
+      toggle.mockRestore();
       saved.mockRestore();
     }
   });
