@@ -1,10 +1,10 @@
 "use client";
 
-import SupportUsButton from "support-us-button";
+import SupportUsButton from "@aossie-org/support-us-button";
 import { useTranslations } from "next-intl";
 import { AOSSIE_URL, GITHUB_SPONSORS_URL } from "@/config/links";
 import { SUPPORT_LOGOS, SUPPORTERS } from "@/config/support";
-import "support-us-button/style.css";
+import "@aossie-org/support-us-button/style.css";
 
 /** Name of the project shown on the support page. */
 const PROJECT_NAME = "PictoPy";

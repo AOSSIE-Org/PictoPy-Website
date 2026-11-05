@@ -10,6 +10,7 @@ import "./globals.css";
 import PageBackground from "@/components/PageBackground";
 import Navbar from "@/components/ui/Navbar";
 import { ThemeProvider } from "@/context/theme-provider";
+import { themeInitScript } from "@/context/theme-script";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -58,6 +59,10 @@ export default async function RootLayout({
       className={`${inter.variable} ${devanagari.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Sets the theme class before <body> is parsed, so the first paint is never the wrong theme */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
