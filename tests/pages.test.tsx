@@ -26,6 +26,7 @@ import { SITE_URL } from "@/config/site";
 import { routing } from "@/i18n/routing";
 import { renderServerTree, setTestLocale } from "./helpers/render";
 import { NotFoundError } from "./helpers/next-navigation";
+import { themeInitScript } from "@/context/theme-script";
 
 vi.mock("next-intl/server", () => import("./helpers/next-intl-server"));
 vi.mock("@aossie-org/social-share-button", () => ({ default: class {} }));
@@ -97,6 +98,9 @@ describe("Locale layout", () => {
     expect(within(body).getAllByText(hi.Home.Navbar.documentation).length).toBeGreaterThan(0);
     // The background photo grid renders behind the content.
     expect(html).toContain("images.unsplash.com");
+    // The theme is applied from <head>, before <body> exists, so the first paint is never the wrong theme
+    const head = new DOMParser().parseFromString(html, "text/html").head;
+    expect(head.querySelector("script")?.textContent).toBe(themeInitScript);
   });
 
   it("rejects unknown locales with a 404", async () => {

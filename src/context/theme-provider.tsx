@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { THEME_STORAGE_KEY } from "./theme-script";
 
 export enum ThemeOptions {
   Light = 0,
@@ -36,9 +37,12 @@ function applyThemeClass(dark: boolean) {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<ThemeOptions>(ThemeOptions.Light);
+  // Until the saved theme is read on mount, `theme` is only the server-rendered default. Applying it would undo the
+  // class the head script (theme-script.ts) already set, flashing the light theme for a frame, and save "light".
+  const [resolved, setResolved] = useState(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
+    const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
 
     let resolvedTheme: ThemeOptions;
 
@@ -54,16 +58,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const setThemeForState = (theme: ThemeOptions) => {
       setTheme(theme);
+      setResolved(true);
     };
 
     setThemeForState(resolvedTheme);
   }, []);
 
   useEffect(() => {
+    if (!resolved) return;
     const dark = theme === ThemeOptions.Dark;
     applyThemeClass(dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [theme]);
+    localStorage.setItem(THEME_STORAGE_KEY, dark ? "dark" : "light");
+  }, [theme, resolved]);
 
   const toggleTheme = () => {
     setTheme((prev) =>

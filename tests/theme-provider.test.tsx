@@ -54,6 +54,26 @@ describe("ThemeProvider", () => {
     expect(localStorage.getItem("theme")).toBe(expected);
   });
 
+  it("keeps the head script's dark class on mount instead of applying the light default first", () => {
+    // As after the head script ran for a saved dark theme
+    localStorage.setItem("theme", "dark");
+    document.documentElement.classList.add("dark");
+    const classStates: boolean[] = [];
+    const observer = new MutationObserver(() => classStates.push(isDarkDocument()));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    const saved = vi.spyOn(Storage.prototype, "setItem");
+    try {
+      renderProvider();
+      observer.takeRecords().forEach(() => classStates.push(isDarkDocument()));
+      expect(screen.getByRole("button").textContent).toBe("dark");
+      expect(classStates.every(Boolean)).toBe(true);
+      expect(saved).not.toHaveBeenCalledWith("theme", "light");
+    } finally {
+      observer.disconnect();
+      saved.mockRestore();
+    }
+  });
+
   it("toggles the theme, the html class and the stored preference", () => {
     mockSystemDark(false);
     renderProvider();
