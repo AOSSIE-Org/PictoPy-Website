@@ -111,7 +111,8 @@ describe("Legal Markdown", () => {
         const hrefs = Array.from(html.matchAll(/href="([^"]*)"/g), (m) => m[1]);
         for (const value of hrefs) {
           expect(value).not.toMatch(unsafeScheme);
-          expect(value).not.toMatch(/\.md$/);
+          // Relative .md links (PRIVACY.md, x.md) must be resolved; an absolute URL may still end in .md (e.g. http://a.md)
+          if (!/^https?:/i.test(value)) expect(value).not.toMatch(/\.md$/);
         }
       }),
     );
